@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2013-03-31T12:16:08
+# Project created by QtCreator 2013-03-31T12:43:24
 #
 #-------------------------------------------------
 
@@ -10,8 +10,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = robowars
 TEMPLATE = app
-
-CONFIG += C++11
 
 
 SOURCES += main.cpp\
