@@ -8,10 +8,6 @@ void thread_pool_t::start()
     m_work.reset(new boost::asio::io_service::work(m_svc));
 
     size_t threads = std::thread::hardware_concurrency() + 1;
-    if (threads < 1)
-    {
-        threads = 1;
-    }
 
     log<trace>() << "[Thread pool] Using " << threads << " threads";
 
