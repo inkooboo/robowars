@@ -22,7 +22,7 @@ private:
     void worker_thread_func(size_t n);
 
     boost::asio::io_service m_svc;
-    std::shared_ptr<boost::asio::io_service::work> m_work;
+    std::unique_ptr<boost::asio::io_service::work> m_work;
 
     std::vector<std::thread> m_threads;
 };

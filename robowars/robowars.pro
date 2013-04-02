@@ -10,7 +10,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
-
 TARGET = robowars
 TEMPLATE = app
 
@@ -51,7 +50,7 @@ HEADERS  += \
     cpp_defs.hpp \
     master.hpp \
     logger.hpp \
-    shutdown_flag.hpp
+    shutdown_signal.hpp
 
 FORMS    += client/mainwindow.ui
 

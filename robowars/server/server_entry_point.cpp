@@ -5,14 +5,14 @@
 #include "thread_pool.hpp"
 
 #include "cpp_defs.hpp"
-#include "shutdown_flag.hpp"
+#include "shutdown_signal.hpp"
 
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <memory>
 
-int server_entry_point(int argc, char* argv[], shutdown_signal_t &stopper)
+int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
 {
     unused_param(argc);
     unused_param(argv);
@@ -30,14 +30,17 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t &stopper)
 
         master->start();
 
-        stopper.subscribe(std::bind(&master_t<server>::stop, master));
+        while (!stopper.is_set())
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
 
-        master->subsystem<thread_pool_t>().join_thread_pool();
+        master->stop();
     }
     catch (std::exception& e)
     {
         std::cerr << "Exception: " << e.what() << "\n";
-        stopper.emitt();
+        stopper.set();
     }
 
     return 0;

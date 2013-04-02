@@ -3,7 +3,7 @@
 #include <thread>
 #include <iostream>
 
-#include "shutdown_flag.hpp"
+#include "shutdown_signal.hpp"
 
 extern entry_point_t server_entry_point;
 extern entry_point_t client_entry_point;
@@ -14,11 +14,11 @@ int main(int argc, char* argv[])
     {
         shutdown_signal_t stopper;
 
-        std::thread server(server_entry_point, argc, argv, std::ref(stopper));
+        std::thread server(server_entry_point, argc, argv, stopper);
 
-        client_entry_point(argc, argv, std::ref(stopper));
+        client_entry_point(argc, argv, stopper);
 
-        stopper.emitt();
+        stopper.set();
 
         server.join();
     }
