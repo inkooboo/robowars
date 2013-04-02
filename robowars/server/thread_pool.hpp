@@ -1,30 +1,23 @@
 #ifndef _THREAD_POOL_HPP_
 # define _THREAD_POOL_HPP_
 
-# include "../Classes/master.hpp"
+# include "master.hpp"
 
 # include "logger.hpp"
 
-# include <boost/thread.hpp>
+# include <thread>
 # include <boost/asio.hpp>
 # include <vector>
 # include <iterator>
 # include <sstream>
 
-class ThreadPool : public Subsystem
+class ThreadPool : public subsystem_t
 {
-    friend class Master;
-
-    explicit ThreadPool(Master *master)
-        : Subsystem(master)
-    {
-    }
-
     virtual void start()
     {
         _work = new boost::asio::io_service::work(_svc);
 
-        size_t threads = master().subsystem<Config>()["threads"];
+        size_t threads = std::thread::hardware_concurrency() + 1;
         if (threads < 1)
         {
             threads = 2;
@@ -32,11 +25,12 @@ class ThreadPool : public Subsystem
 
         logger::log(TRACE) << "[Thread pool] Using " << threads << " threads";
 
-        _threads.resize(threads -1);
+        _threads.resize(threads - 1);
 
-        for (std::vector<boost::thread>::iterator i = _threads.begin(); i != _threads.end(); ++i)
+        size_t thr_name = 0;
+        for (auto &i : _threads)
         {
-            *i = boost::thread(&ThreadPool::worker_thread_func, this, static_cast<size_t>(std::distance(_threads.begin(), i)));
+            i = std::thread(&ThreadPool::worker_thread_func, this, thr_name++);
         }
 
     }
@@ -45,11 +39,11 @@ class ThreadPool : public Subsystem
     {
         delete _work;
 
-        for (std::vector<boost::thread>::iterator i = _threads.begin(); i != _threads.end(); ++i)
+        for (auto &i : _threads)
         {
-            if (i->joinable())
+            if (i.joinable())
             {
-                i->join();
+                i.join();
             }
         }
 
@@ -74,14 +68,14 @@ private:
     {
         std::ostringstream name;
         name << n;
-        logger::ThreadName this_thread(name.str());
+        logger::set_thread_name(name.str());
         join_thread_pool();
     }
 
     boost::asio::io_service _svc;
     boost::asio::io_service::work *_work;
 
-    std::vector<boost::thread> _threads;
+    std::vector<std::thread> _threads;
 };
 
 

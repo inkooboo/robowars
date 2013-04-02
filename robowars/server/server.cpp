@@ -1,15 +1,17 @@
 #include "server.hpp"
 
-#include "server_config.hpp"
 #include "thread_pool.hpp"
 #include "logger.hpp"
 
-Server::Server(Master *_master)
-    : Subsystem(_master)
-    , io_service_(master().subsystem<ThreadPool>().get_io_service())
-    , acceptor_(io_service_, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), int(master().subsystem<Config>()["port"])))
+# include <boost/bind.hpp>
+
+static const int s_port = 7685;
+
+Server::Server()
+    : io_service_(master_t::subsystem<ThreadPool>().get_io_service())
+    , acceptor_(io_service_, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), s_port))
 {
-    logger::log(TRACE) << "[Server] Create server using port " << int(master().subsystem<Config>()["port"]);
+    logger::log(TRACE) << "[Server] Create server using port " << s_port;
 }
 
 void Server::start()
@@ -24,7 +26,7 @@ void Server::stop()
 
 void Server::start_accept()
 {
-    Session* new_session = new Session(io_service_, &master());
+    Session* new_session = new Session(io_service_);
     acceptor_.async_accept(new_session->socket(), boost::bind(&Server::handle_accept, this, new_session, boost::asio::placeholders::error));
 }
 

@@ -1,30 +1,26 @@
-#include "../Classes/master.hpp"
-#include "server_config.hpp"
+#include "master.hpp"
 
 #include "logger.hpp"
 #include "server.hpp"
 #include "thread_pool.hpp"
-#include "game_manager.hpp"
 
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-int main(int argc, char* argv[])
+int server_main(int argc, char* argv[])
 {
-    logger::ThreadName this_thread("Main");
+    logger::set_thread_name("Main");
 
     srand((unsigned int)time(0));
 
     try
     {
-        Master master;
+        master_t master;
 
-        master.add_subsystem<Config>();
-        master.add_subsystem<Logger>();
-        master.add_subsystem<ThreadPool>();
-        master.add_subsystem<Server>();
-        master.add_subsystem<GameManager>();
+        master.add_managed_subsystem<Logger>();
+        master.add_managed_subsystem<ThreadPool>();
+        master.add_managed_subsystem<Server>();
 
         master.start();
 

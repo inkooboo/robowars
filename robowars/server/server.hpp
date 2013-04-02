@@ -1,23 +1,20 @@
 #ifndef _SERVER_HPP_
 # define _SERVER_HPP_
 
-# include "../Classes/master.hpp"
-# include "../Classes/event.hpp"
+# include "master.hpp"
 # include "session.hpp"
 
-# include <boost/bind.hpp>
 # include <boost/asio.hpp>
 
-class Server: public Subsystem
+class Server: public subsystem_t
 {
-    friend class Master;
+public:
+    Server();
 
-    explicit Server(Master *master);
-
+private:
     virtual void start();
     virtual void stop();
 
-private:
     void start_accept();
 
     void handle_accept(Session* new_session, const boost::system::error_code& error);

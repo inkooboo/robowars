@@ -1,6 +1,6 @@
 #include "logger.hpp"
 
-#include "server_config.hpp"
+#include "cpp11.hpp"
 
 #include <sstream>
 
@@ -10,8 +10,13 @@
 namespace logger
 {
 
-    boost::thread_specific_ptr<ThreadName> tss_value;
+    thread_local std::string local_thread_name("noname");
     FILE *g_log = stdout;
+
+    void set_thread_name(const std::string &name)
+    {
+        local_thread_name = name;
+    }
 
     namespace detail
     {
@@ -19,11 +24,7 @@ namespace logger
         void log_str(const log_level_t level, const std::string &to_log)
         {
 
-            const char *thr_name = "noname";
-            if (tss_value.get() != NULL)
-            {
-                thr_name = tss_value->name_.c_str();
-            }
+            const char *thr_name = local_thread_name.c_str();
 
             const char *log_level = "dbg";
             switch (level)
@@ -62,28 +63,11 @@ namespace logger
         detail::log_str(level, text);
     }
 
-    ThreadName::ThreadName(const std::string &name) 
-        : name_(name)
-    {
-        if (tss_value.get() != NULL)
-        {
-            assert("naming named of not empty thread");
-        }
-
-        tss_value.reset(this);
-    }
-
-    ThreadName::~ThreadName()
-    {
-        tss_value.release();
-    }
-
 } // namespace logger
 
-Logger::Logger(Master *_master)
-    : Subsystem(_master)
+Logger::Logger()
 {
-    std::string file_name = master().subsystem<Config>()["log_file"];
+    std::string file_name = "";
     
     if (logger::g_log != stdout)
     {
