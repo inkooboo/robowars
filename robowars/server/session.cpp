@@ -1,6 +1,6 @@
 #include "session.hpp"
 #include "logger.hpp"
-#include "master.hpp"
+#include "server_defs.hpp"
 
 # include <boost/asio.hpp>
 # include <boost/bind.hpp>
@@ -26,6 +26,8 @@ void Session::start_read()
 
 void Session::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
+    (void)bytes_transferred;
+
     if (!error)
     {
 //        Event evt = Event::parse(data_, bytes_transferred);

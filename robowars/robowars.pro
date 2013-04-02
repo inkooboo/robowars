@@ -23,14 +23,14 @@ macx:LIBS += -stdlib=libc++ -mmacosx-version-min=10.7
 
 SOURCES += \
     client/mainwindow.cpp \
-    client/client_main.cpp \
     \
     server/session.cpp \
     server/server.cpp \
     server/logger.cpp \
     \
     main.cpp \
-    server/server_main.cpp
+    server/server_main.cpp \
+    client/client_main.cpp
 
 HEADERS  += \
     client/mainwindow.h \
@@ -41,8 +41,10 @@ HEADERS  += \
     server/logger.hpp \
     subsystem.hpp \
     noncopyable.hpp \
+    cpp_defs.hpp \
     master.hpp \
-    cpp11.hpp
+    client/client_defs.hpp \
+    server/server_defs.hpp
 
 FORMS    += client/mainwindow.ui
 

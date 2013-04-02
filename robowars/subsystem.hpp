@@ -10,9 +10,6 @@
 
 # include "noncopyable.hpp"
 
-/** @class subsystem_t
- * @brief Interface for managed subsystem.
- */
 class subsystem_t : private noncopyable_t
 {
 public:

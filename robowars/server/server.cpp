@@ -3,12 +3,12 @@
 #include "thread_pool.hpp"
 #include "logger.hpp"
 
-# include <boost/bind.hpp>
+#include <boost/bind.hpp>
 
 static const int s_port = 4576;
 
-Server::Server()
-    : io_service_(master_t::subsystem<ThreadPool>().get_io_service())
+Server::Server(boost::asio::io_service &io_svc)
+    : io_service_(io_svc)
     , acceptor_(io_service_, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), s_port))
 {
     logger::log(TRACE) << "[Server] Create server using port " << s_port;

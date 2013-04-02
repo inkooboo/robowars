@@ -1,7 +1,7 @@
 #ifndef _SERVER_HPP_
 # define _SERVER_HPP_
 
-# include "master.hpp"
+# include "subsystem.hpp"
 # include "session.hpp"
 
 # include <boost/asio.hpp>
@@ -9,7 +9,7 @@
 class Server: public subsystem_t
 {
 public:
-    Server();
+    Server(boost::asio::io_service &io_svc);
 
 private:
     virtual void start();

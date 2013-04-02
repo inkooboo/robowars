@@ -1,7 +1,7 @@
 #ifndef _LOGGER_HPP_
 # define _LOGGER_HPP_
 
-# include "master.hpp"
+# include "subsystem.hpp"
 
 # include "noncopyable.hpp"
 

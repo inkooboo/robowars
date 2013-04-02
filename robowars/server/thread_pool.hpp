@@ -1,7 +1,7 @@
 #ifndef _THREAD_POOL_HPP_
 # define _THREAD_POOL_HPP_
 
-# include "master.hpp"
+# include "subsystem.hpp"
 
 # include "logger.hpp"
 

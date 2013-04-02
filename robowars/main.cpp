@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
 
         client_main(argc, argv);
 
+//        server.
         server.join();
     }
     catch(std::exception &e)
