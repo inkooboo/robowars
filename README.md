@@ -3,7 +3,7 @@ robowars
 
 building boost statically:
 
-  -for win
+  - for win
 ./b2 toolset=msvc link=static threading=multi runtime-link=static
 
   - for mac
