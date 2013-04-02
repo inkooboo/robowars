@@ -11,22 +11,23 @@
 #include "cpp_defs.hpp"
 
 #include <cstdio>
+#include <cstring>
 
 namespace internal
 {
     
-    thread_local std::string tls_name;
+    thread_local char tls_name[255] = {0};
     
     void do_log(log_level_t level, const std::string &str)
     {
-        fprintf(stderr, "%s %d %s\n", tls_name.c_str(), (int)level, str.c_str());
+        fprintf(stderr, "%s %d %s\n", tls_name, (int)level, str.c_str());
     }
     
 } //namespace internal
 
 void set_this_thread_log_name(const char *name)
 {
-    internal::tls_name = name;
+    strncpy(internal::tls_name, name, sizeof(internal::tls_name));
 }
 
 std::string get_this_thread_log_name()

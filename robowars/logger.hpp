@@ -10,6 +10,7 @@
 #define __new_logger__cpp11_logger__
 
 #  include <sstream>
+#  include <memory>
 
 enum log_level_t
 {
@@ -26,16 +27,15 @@ namespace internal
 
     struct logging_stream_t
     {
-        logging_stream_t(logging_stream_t&&) = default;
-
         explicit logging_stream_t(log_level_t level)
-            : level(level)
+            : stream(std::make_shared<std::stringstream>())
+            , level(level)
         {
         }
         
         ~logging_stream_t()
         {
-            do_log(level, stream.str());
+            do_log(level, stream->str());
         }
                 
         template <typename T>
@@ -49,14 +49,14 @@ namespace internal
 #endif
             if (level >= min_log_level)
             {
-                stream << val;
+                (*stream) << val;
             }
             
             return *this;
         }
 
     private:
-        std::stringstream stream;
+        std::shared_ptr<std::stringstream> stream;
         log_level_t level;
     };    
 

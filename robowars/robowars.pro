@@ -15,7 +15,10 @@ TARGET = robowars
 TEMPLATE = app
 
 INCLUDEPATH += ../boost_1_53_0
-LIBS += -L../boost_1_53_0/stage/lib -lboost_system
+LIBS += -L../boost_1_53_0/stage/lib
+
+win32:LIBS += -lboost_system-mgw47-mt-sd-1_53 -lws2_32 -lmswsock
+macx:LIBS += -lboost_system
 
 # c++11 support form mac os
 macx:QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7

@@ -2,7 +2,7 @@
 #define SHUTDOWN_FLAG_HPP
 
 #  include <list>
-#  include <thread>
+#  include <mutex>
 
 #  include "noncopyable.hpp"
 
