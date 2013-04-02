@@ -20,6 +20,8 @@ public:
 
     void emitt() const
     {
+        std::lock_guard<std::mutex> scoped_lock(m_guard);
+
         for (auto &f: m_handlers)
         {
             f();
@@ -27,7 +29,7 @@ public:
     }
 
 private:
-    std::mutex m_guard;
+    mutable std::mutex m_guard;
     std::list<on_shut_down_func_t> m_handlers;
 };
 

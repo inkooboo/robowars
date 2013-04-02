@@ -63,7 +63,8 @@ namespace internal
 } //namespace internal
 
 void set_this_thread_log_name(const char *name);
-                
+std::string get_this_thread_log_name();
+
 template <log_level_t LogLevel>
 inline internal::logging_stream_t log()
 {

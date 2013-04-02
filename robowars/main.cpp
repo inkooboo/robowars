@@ -14,13 +14,13 @@ int main(int argc, char* argv[])
     {
         shutdown_signal_t stopper;
 
-//        std::thread server(server_entry_point, argc, argv, std::ref(stopper));
+        std::thread server(server_entry_point, argc, argv, std::ref(stopper));
 
         client_entry_point(argc, argv, std::ref(stopper));
 
-//        stopper.emitt();
+        stopper.emitt();
 
- //       server.join();
+        server.join();
     }
     catch(std::exception &e)
     {

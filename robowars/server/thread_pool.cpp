@@ -37,7 +37,7 @@ void thread_pool_t::stop()
 
 void thread_pool_t::join_thread_pool()
 {
-    log<trace>() << "[Thread pool] Thread joined to thread pool";
+    log<trace>() << "[Thread pool] Thread joined to thread pool:" << get_this_thread_log_name();
     m_svc.run();
 }
 

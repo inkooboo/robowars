@@ -19,7 +19,7 @@ namespace internal
     
     void do_log(log_level_t level, const std::string &str)
     {
-        printf("%s %d %s\n", tls_name.c_str(), (int)level, str.c_str());
+        fprintf(stderr, "%s %d %s\n", tls_name.c_str(), (int)level, str.c_str());
     }
     
 } //namespace internal
@@ -27,4 +27,9 @@ namespace internal
 void set_this_thread_log_name(const char *name)
 {
     internal::tls_name = name;
+}
+
+std::string get_this_thread_log_name()
+{
+    return internal::tls_name;
 }

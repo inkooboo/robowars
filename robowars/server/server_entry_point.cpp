@@ -17,7 +17,7 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t &stopper)
     unused_param(argc);
     unused_param(argv);
 
-    set_this_thread_log_name("Main");
+    set_this_thread_log_name("server");
 
     srand((unsigned int)time(0));
 
