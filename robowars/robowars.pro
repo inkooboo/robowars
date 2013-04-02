@@ -9,14 +9,17 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7
+
 
 TARGET = robowars
 TEMPLATE = app
 
 INCLUDEPATH += ../boost_1_53_0
 LIBS += -L../boost_1_53_0/stage/lib -lboost_system
-LIBS += -stdlib=libc++ -mmacosx-version-min=10.7
+
+# c++11 support form mac os
+macx:QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7
+macx:LIBS += -stdlib=libc++ -mmacosx-version-min=10.7
 
 SOURCES += \
     client/mainwindow.cpp \

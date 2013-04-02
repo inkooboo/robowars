@@ -5,7 +5,7 @@
 
 # include <boost/bind.hpp>
 
-static const int s_port = 7685;
+static const int s_port = 4576;
 
 Server::Server()
     : io_service_(master_t::subsystem<ThreadPool>().get_io_service())
