@@ -26,27 +26,29 @@ SOURCES += \
     \
     server/session.cpp \
     server/server.cpp \
-    server/logger.cpp \
     \
     main.cpp \
-    server/server_main.cpp \
-    client/client_main.cpp
+    logger.cpp \
+    client/client_entry_point.cpp \
+    server/server_entry_point.cpp
 
 HEADERS  += \
     client/mainwindow.h \
+    client/client_defs.hpp \
     \
     server/thread_pool.hpp \
     server/session.hpp \
     server/server.hpp \
     server/logger.hpp \
+    server/server_defs.hpp \
+    \
     subsystem.hpp \
     noncopyable.hpp \
     cpp_defs.hpp \
     master.hpp \
-    client/client_defs.hpp \
-    server/server_defs.hpp
+    logger.hpp \
+    shutdown_flag.hpp
 
 FORMS    += client/mainwindow.ui
 
-OTHER_FILES += \
-    server/config.txt
+OTHER_FILES +=

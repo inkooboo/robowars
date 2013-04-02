@@ -23,7 +23,7 @@ class ThreadPool : public subsystem_t
             threads = 2;
         }
 
-        logger::log(TRACE) << "[Thread pool] Using " << threads << " threads";
+        log<trace>() << "[Thread pool] Using " << threads << " threads";
 
         _threads.resize(threads - 1);
 
@@ -38,6 +38,7 @@ class ThreadPool : public subsystem_t
     virtual void stop()
     {
         delete _work;
+        _work = 0;
 
         for (auto &i : _threads)
         {
@@ -53,7 +54,7 @@ public:
 
     void join_thread_pool()
     {
-        logger::log(TRACE, "[Thread pool] Thread joined to thread pool");
+        log<trace>() << "[Thread pool] Thread joined to thread pool";
         _svc.run();
     }
 
@@ -68,7 +69,7 @@ private:
     {
         std::ostringstream name;
         name << n;
-        logger::set_thread_name(name.str());
+        set_this_thread_log_name(name.str().c_str());
         join_thread_pool();
     }
 

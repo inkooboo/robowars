@@ -37,6 +37,14 @@ public:
     inline master_t();
 
 private:
+
+    enum state_t
+    {
+          st_created
+        , st_started
+        , st_stopped
+    } m_state;
+
     std::vector<std::unique_ptr<subsystem_t>> m_subsystems;
 };
 
@@ -45,23 +53,32 @@ private:
 template <typename ParentSystem>
 inline void master_t<ParentSystem>::start()
 {
+    assert(m_state == st_created);
+
     for (auto &subsystem : m_subsystems)
     {
         subsystem->start();
     }
+
+    m_state = st_started;
 }
 
 template <typename ParentSystem>
 inline void master_t<ParentSystem>::stop()
 {
+    assert(m_state == st_started);
+
     for (auto &subsystem : m_subsystems)
     {
         subsystem->stop();
     }
+
+    m_state = st_stopped;
 }
 
 template <typename ParentSystem>
 inline master_t<ParentSystem>::master_t()
+    : m_state(st_created)
 {
     static ParentSystem *checker = 0;
     assert(0 == checker && "already created");

@@ -11,12 +11,12 @@ Server::Server(boost::asio::io_service &io_svc)
     : io_service_(io_svc)
     , acceptor_(io_service_, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), s_port))
 {
-    logger::log(TRACE) << "[Server] Create server using port " << s_port;
+    log<trace>() << "[Server] Create server using port " << s_port;
 }
 
 void Server::start()
 {
-    logger::log(TRACE, "[Server] Start server");
+    log<trace>() << "[Server] Start server";
     start_accept();
 }
 

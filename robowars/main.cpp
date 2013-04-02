@@ -3,19 +3,24 @@
 #include <thread>
 #include <iostream>
 
-extern int server_main(int, char*[]);
-extern int client_main(int, char*[]);
+#include "shutdown_flag.hpp"
+
+extern entry_point_t server_entry_point;
+extern entry_point_t client_entry_point;
 
 int main(int argc, char* argv[])
 {
     try
     {
-        std::thread server(server_main, argc, argv);
+        shutdown_signal_t stopper;
 
-        client_main(argc, argv);
+//        std::thread server(server_entry_point, argc, argv, std::ref(stopper));
 
-//        server.
-        server.join();
+        client_entry_point(argc, argv, std::ref(stopper));
+
+//        stopper.emitt();
+
+ //       server.join();
     }
     catch(std::exception &e)
     {
