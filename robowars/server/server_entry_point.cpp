@@ -25,14 +25,14 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t &stopper)
     {
         auto master = std::make_shared<master_t<server>>();
 
-        master->add_managed_subsystem<ThreadPool>();
-        master->add_managed_subsystem<Server>(std::ref(master->subsystem<ThreadPool>().get_io_service()));
+        master->add_managed_subsystem<thread_pool_t>();
+        master->add_managed_subsystem<Server>(std::ref(master->subsystem<thread_pool_t>().io_service()));
 
         master->start();
 
         stopper.subscribe(std::bind(&master_t<server>::stop, master));
 
-        master->subsystem<ThreadPool>().join_thread_pool();
+        master->subsystem<thread_pool_t>().join_thread_pool();
     }
     catch (std::exception& e)
     {

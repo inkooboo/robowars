@@ -30,7 +30,8 @@ SOURCES += \
     main.cpp \
     logger.cpp \
     client/client_entry_point.cpp \
-    server/server_entry_point.cpp
+    server/server_entry_point.cpp \
+    server/thread_pool.cpp
 
 HEADERS  += \
     client/mainwindow.h \
