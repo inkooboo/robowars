@@ -5,7 +5,7 @@ building boost statically:
 
 
   - for win
-#add mingw bin to PATH var then
+add mingw bin to PATH var then
 ./b2 toolset=gcc link=static threading=multi runtime-link=static
 
   - for mac
