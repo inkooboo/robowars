@@ -1,6 +1,6 @@
-#include "client_defs.hpp"
-
 #include "shutdown_signal.hpp"
+
+#include "master.hpp"
 
 #include "mainwindow.h"
 #include <QApplication>
@@ -17,7 +17,7 @@ int client_entry_point(int argc, char *argv[], shutdown_signal_t stopper)
         MainWindow main_window; // should be moved to render system
         main_window.show();     //
 
-        auto master = std::make_shared<master_t<client>>();
+        auto master = std::make_shared<master_t>();
         master->start();
 
         int result = a.exec();

@@ -1,5 +1,4 @@
-#include "server_defs.hpp"
-
+#include "master.hpp"
 #include "logger.hpp"
 #include "server.hpp"
 #include "thread_pool.hpp"
@@ -22,7 +21,7 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
 
     try
     {
-        auto master = std::make_shared<master_t<server>>();
+        auto master = std::make_shared<master_t>();
 
         master->add_managed_subsystem<thread_pool_t>();
         master->add_managed_subsystem<server_t>(std::ref(master->subsystem<thread_pool_t>().io_service()));

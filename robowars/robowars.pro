@@ -37,15 +37,12 @@ SOURCES += \
 
 HEADERS  += \
     client/mainwindow.h \
-    client/client_defs.hpp \
     \
     server/thread_pool.hpp \
     server/session.hpp \
     server/server.hpp \
     server/logger.hpp \
-    server/server_defs.hpp \
     \
-    subsystem.hpp \
     noncopyable.hpp \
     cpp_defs.hpp \
     master.hpp \
