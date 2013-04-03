@@ -6,10 +6,10 @@
 
 # include <boost/asio.hpp>
 
-class Server: public subsystem_t
+class server_t : public subsystem_t
 {
 public:
-    Server(boost::asio::io_service &io_svc);
+    server_t(boost::asio::io_service &io_svc);
 
 private:
     virtual void start();

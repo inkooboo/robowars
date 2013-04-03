@@ -26,7 +26,7 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
         auto master = std::make_shared<master_t<server>>();
 
         master->add_managed_subsystem<thread_pool_t>();
-        master->add_managed_subsystem<Server>(std::ref(master->subsystem<thread_pool_t>().io_service()));
+        master->add_managed_subsystem<server_t>(std::ref(master->subsystem<thread_pool_t>().io_service()));
 
         master->start();
 
