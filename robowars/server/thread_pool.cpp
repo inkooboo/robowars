@@ -25,6 +25,8 @@ void thread_pool_t::stop()
 {
     m_work.reset();
 
+    m_svc.stop();
+
     for (auto &i : m_threads)
     {
         if (i.joinable())
