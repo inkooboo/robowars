@@ -6,27 +6,27 @@
 # include <boost/bind.hpp>
 
 
-Session::Session(boost::asio::io_service& io_service)
-    : socket_(io_service)
+session_t::session_t(boost::asio::io_service& io_service)
+    : m_socket(io_service)
 {
 }
 
-boost::asio::ip::tcp::socket& Session::socket()
+boost::asio::ip::tcp::socket& session_t::socket()
 {
-    return socket_;
+    return m_socket;
 }
 
-void Session::start_read()
+void session_t::start_read()
 {
-    socket_.async_read_some(boost::asio::buffer(data_, max_length),
-                            boost::bind(&Session::handle_read, this,
+    m_socket.async_read_some(boost::asio::buffer(m_data, MAX_DATA_LENGTH),
+                            boost::bind(&session_t::handle_read, this,
                             boost::asio::placeholders::error,
                             boost::asio::placeholders::bytes_transferred));
 }
 
-void Session::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
+void session_t::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
-    (void)bytes_transferred;
+    unused_params(bytes_transferred);
 
     if (!error)
     {
@@ -63,7 +63,7 @@ void Session::handle_read(const boost::system::error_code& error, size_t bytes_t
     }
 }
 
-void Session::handle_write(const boost::system::error_code& error)
+void session_t::handle_write(const boost::system::error_code& error)
 {
     if (!error)
     {
@@ -78,7 +78,7 @@ void Session::handle_write(const boost::system::error_code& error)
     }
 }
 
-//void Session::send_event(const Event &evt)
+//void session_t::send_event(const Event &evt)
 //{
 //    std::string serialized = evt.serialize();
 //    logger::log(DEBUG) << "[Session] Send event:\n" << serialized;

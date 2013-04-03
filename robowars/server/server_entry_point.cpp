@@ -14,8 +14,7 @@
 
 int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
 {
-    unused_param(argc);
-    unused_param(argv);
+    unused_params(argc, argv);
 
     set_this_thread_log_name("server");
 
@@ -39,7 +38,7 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
     }
     catch (std::exception& e)
     {
-        std::cerr << "Exception: " << e.what() << "\n";
+        log<critical>() << "Exception: " << e.what() << "\n";
         stopper.set();
     }
 

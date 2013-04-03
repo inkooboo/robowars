@@ -1,13 +1,15 @@
 #ifndef _SESSION_HPP_
-# define _SESSION_HPP_
+#  define _SESSION_HPP_
 
-# include <boost/asio.hpp>
+#  include "logger.hpp"
 
-struct ServerGame;
+#  include <boost/asio.hpp>
 
-struct Session
+class session_t
 {
-    Session(boost::asio::io_service& io_service);
+    DEFINE_LOGGER_FOR_CLASS(session_t)
+public:
+    session_t(boost::asio::io_service& io_service);
 
     boost::asio::ip::tcp::socket& socket();
 
@@ -20,9 +22,9 @@ private:
 
     void handle_write(const boost::system::error_code& error);
 
-    boost::asio::ip::tcp::socket socket_;
-    enum { max_length = 8192 };
-    char data_[max_length];
+    boost::asio::ip::tcp::socket m_socket;
+    const static int MAX_DATA_LENGTH = 8192;
+    char m_data[MAX_DATA_LENGTH];
 };
 
 #endif //_SESSION_HPP_

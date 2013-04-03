@@ -9,7 +9,7 @@ void thread_pool_t::start()
 
     size_t threads = std::thread::hardware_concurrency() + 1;
 
-    log<trace>() << "[Thread pool] Using " << threads << " threads";
+    log<trace>() << "using " << threads << " threads";
 
     m_threads.resize(threads);
 
@@ -39,7 +39,7 @@ void thread_pool_t::stop()
 
 void thread_pool_t::join_thread_pool()
 {
-    log<trace>() << "[Thread pool] Thread joined to thread pool:" << get_this_thread_log_name();
+    log<trace>() << "thread joined to thread pool:" << get_this_thread_log_name();
     m_svc.run();
 }
 

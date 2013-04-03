@@ -23,6 +23,17 @@ namespace internal
         fprintf(stderr, "%s %d %s\n", tls_name, (int)level, str.c_str());
     }
     
+    logging_stream_t::logging_stream_t(log_level_t level)
+        : stream(std::make_shared<std::stringstream>())
+        , level(level)
+    {
+    }
+
+    logging_stream_t::~logging_stream_t()
+    {
+        do_log(level, stream->str());
+    }
+
 } //namespace internal
 
 void set_this_thread_log_name(const char *name)

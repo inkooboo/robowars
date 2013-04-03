@@ -8,9 +8,6 @@
 #    define thread_local __thread
 #  endif
 
-template <typename T>
-void unused_param(T &&)
-{ }
-
+template<class... T> void unused_params(T&&...) {}
 
 #endif //__CPP_11_HACKS__

@@ -27,16 +27,8 @@ namespace internal
 
     struct logging_stream_t
     {
-        explicit logging_stream_t(log_level_t level)
-            : stream(std::make_shared<std::stringstream>())
-            , level(level)
-        {
-        }
-        
-        ~logging_stream_t()
-        {
-            do_log(level, stream->str());
-        }
+        explicit logging_stream_t(log_level_t level);
+        ~logging_stream_t();
                 
         template <typename T>
         logging_stream_t & operator<<(const T &val)
@@ -73,5 +65,12 @@ inline internal::logging_stream_t log()
     return internal::logging_stream_t(LogLevel);
 }
 
+#define DEFINE_LOGGER_FOR_CLASS(class_name) \
+    template <log_level_t LogLevel> \
+    internal::logging_stream_t log() { \
+        internal::logging_stream_t ret(LogLevel); \
+        ret << "[" << (#class_name) << "]: "; \
+        return ret; \
+    }
 
 #endif /* defined(__new_logger__cpp11_logger__) */
