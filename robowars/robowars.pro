@@ -47,7 +47,9 @@ HEADERS  += \
     cpp_defs.hpp \
     master.hpp \
     logger.hpp \
-    shutdown_signal.hpp
+    shutdown_signal.hpp \
+    client/client_defs.hpp \
+    server/server_defs.hpp
 
 FORMS    += client/mainwindow.ui
 

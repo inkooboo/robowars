@@ -1,13 +1,12 @@
 #ifndef _SERVER_HPP_
 # define _SERVER_HPP_
 
-#  include "subsystem.hpp"
 #  include "session.hpp"
 #  include "logger.hpp"
 
 #  include <boost/asio.hpp>
 
-class server_t : public subsystem_t
+class server_t
 {
     DEFINE_LOGGER_FOR_CLASS(server_t)
 

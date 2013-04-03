@@ -21,19 +21,20 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
 
     try
     {
-        auto master = std::make_shared<master_t>();
+        struct master_t : private noncopyable_t
+        {
+            DEFINE_SUBSYSTEM(thread_pool_t, thread_pool)
+            DEFINE_SUBSYSTEM(server_t, server)
+        };
 
-        master->add_managed_subsystem<thread_pool_t>();
-        master->add_managed_subsystem<server_t>(std::ref(master->subsystem<thread_pool_t>().io_service()));
-
-        master->start();
+        master_t master;
+//        master->add_managed_subsystem<thread_pool_t>();
+//        master->add_managed_subsystem<server_t>(std::ref(master->subsystem<thread_pool_t>().io_service()));
 
         while (!stopper.is_set())
         {
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
-
-        master->stop();
     }
     catch (std::exception& e)
     {

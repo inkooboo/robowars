@@ -1,7 +1,6 @@
 #ifndef _THREAD_POOL_HPP_
 #  define _THREAD_POOL_HPP_
 
-#  include "subsystem.hpp"
 #  include "logger.hpp"
 #  include <boost/asio.hpp>
 
@@ -9,7 +8,7 @@
 #  include <vector>
 #  include <memory>
 
-class thread_pool_t : public subsystem_t
+class thread_pool_t
 {
     DEFINE_LOGGER_FOR_CLASS(thread_pool_t)
 

@@ -1,4 +1,5 @@
 #include "shutdown_signal.hpp"
+#include "client_defs.hpp"
 
 #include "master.hpp"
 
@@ -17,12 +18,7 @@ int client_entry_point(int argc, char *argv[], shutdown_signal_t stopper)
         MainWindow main_window; // should be moved to render system
         main_window.show();     //
 
-        auto master = std::make_shared<master_t>();
-        master->start();
-
         int result = a.exec();
-
-        master->stop();
 
         return result;
     }
