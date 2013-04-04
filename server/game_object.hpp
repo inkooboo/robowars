@@ -1,15 +1,25 @@
+//
+//  ai_base.hpp
+//
+//
+//  Created by inkooboo on 4/4/13.
+//
+//
+
 #ifndef GAME_OBJECT_HPP
 #define GAME_OBJECT_HPP
 
 #  include "noncopyable.hpp"
 
 #  include "primitives.hpp"
+#  include "server_defs.hpp"
 
 #  include <string>
-#  include <memory>
 
-struct game_object_t : private noncopyable_t
+class game_object_t : private noncopyable_t
 {
+    ai_base_ptr ai;
+    
     size_t id;
 
     std::string type;
@@ -20,7 +30,7 @@ struct game_object_t : private noncopyable_t
     vector3 direction;
 };
 
-typedef std::shared_ptr<game_object_t> game_object_ptr;
+
 
 
 #endif // GAME_OBJECT_HPP
