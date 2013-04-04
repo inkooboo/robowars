@@ -1,8 +1,6 @@
 #include "shutdown_signal.hpp"
 #include "client_defs.hpp"
 
-#include "master.hpp"
-
 #include "mainwindow.h"
 #include <QApplication>
 

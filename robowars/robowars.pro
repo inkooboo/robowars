@@ -33,23 +33,24 @@ SOURCES += \
     logger.cpp \
     client/client_entry_point.cpp \
     server/server_entry_point.cpp \
-    server/thread_pool.cpp
+    server/thread_pool.cpp \
+    subsystem.cpp
 
 HEADERS  += \
     client/mainwindow.h \
     \
     server/thread_pool.hpp \
     server/session.hpp \
-    server/server.hpp \
     server/logger.hpp \
     \
     noncopyable.hpp \
     cpp_defs.hpp \
-    master.hpp \
     logger.hpp \
     shutdown_signal.hpp \
     client/client_defs.hpp \
-    server/server_defs.hpp
+    server/server_defs.hpp \
+    server/server.hpp \
+    subsystem.hpp
 
 FORMS    += client/mainwindow.ui
 

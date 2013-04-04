@@ -1,9 +1,8 @@
-#include "master.hpp"
 #include "logger.hpp"
 #include "server.hpp"
 #include "thread_pool.hpp"
 
-#include "cpp_defs.hpp"
+#include "server_defs.hpp"
 #include "shutdown_signal.hpp"
 
 #include <cstdlib>
@@ -21,15 +20,7 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
 
     try
     {
-        struct master_t : private noncopyable_t
-        {
-            DEFINE_SUBSYSTEM(thread_pool_t, thread_pool)
-            DEFINE_SUBSYSTEM(server_t, server)
-        };
 
-        master_t master;
-//        master->add_managed_subsystem<thread_pool_t>();
-//        master->add_managed_subsystem<server_t>(std::ref(master->subsystem<thread_pool_t>().io_service()));
 
         while (!stopper.is_set())
         {
