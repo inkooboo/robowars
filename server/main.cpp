@@ -1,19 +1,20 @@
+#include <QCoreApplication>
+
 #include "logger.hpp"
 #include "server.hpp"
 #include "thread_pool.hpp"
 #include "master.hpp"
 #include "server_defs.hpp"
-#include "shutdown_signal.hpp"
 
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <memory>
 
-int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
+int main(int argc, char *argv[])
 {
-    unused_params(argc, argv);
-
+    QCoreApplication a(argc, argv);
+    
     set_this_thread_log_name("server");
 
     srand((unsigned int)time(0));
@@ -23,23 +24,16 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
         boost::asio::io_service io_svc;
 
         master_t master;
-        master.add_subsystem<thread_pool_t>(new thread_pool_t(io_svc));
-        master.add_subsystem<server_t>(new server_t(io_svc));
+        master.add_managed_subsystem<thread_pool_t>(std::ref(io_svc));
+        master.add_managed_subsystem<server_t>(std::ref(io_svc));
 
         master.start();
-
-        while (!stopper.is_set())
-        {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
 
         master.stop();
     }
     catch (std::exception& e)
     {
         log<critical>() << "Exception: " << e.what() << "\n";
-        stopper.set();
     }
-
-    return 0;
+    return a.exec();
 }
