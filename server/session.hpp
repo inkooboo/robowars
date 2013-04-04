@@ -2,6 +2,7 @@
 #  define _SESSION_HPP_
 
 #  include "logger.hpp"
+#  include "server_defs.hpp"
 
 #  include <boost/asio.hpp>
 
@@ -25,6 +26,16 @@ private:
     boost::asio::ip::tcp::socket m_socket;
     const static int MAX_DATA_LENGTH = 8192;
     char m_data[MAX_DATA_LENGTH];
+
+    user_info_ptr m_user_info;
+
+    enum state_t
+    {
+          st_empty
+        , st_connected
+        , st_authenticated
+        , st_ingame
+    } m_state;
 };
 
 #endif //_SESSION_HPP_

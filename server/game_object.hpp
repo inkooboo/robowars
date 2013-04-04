@@ -18,6 +18,7 @@
 
 class game_object_t : private noncopyable_t
 {
+public:
     ai_base_ptr ai;
     
     size_t id;

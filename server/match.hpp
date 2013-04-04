@@ -15,8 +15,9 @@
 
 #  include <memory>
 
-struct match_t : private noncopyable_t
+class match_t : private noncopyable_t
 {
+public:
     std::shared_ptr<session_t> client_session; //in future will be array of players sessions
 
 

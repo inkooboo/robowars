@@ -14,8 +14,9 @@
 
 #  include <map>
 
-struct field_t : private noncopyable_t
+class field_t : private noncopyable_t
 {
+public:
     std::map<size_t, game_object_t> m_objects;
     
     void on_time_chunk(float dt);

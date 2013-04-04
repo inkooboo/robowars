@@ -25,6 +25,7 @@ win32:LIBS += -lboost_system-mgw47-mt-sd-1_53 -lws2_32 -lmswsock
 macx:LIBS += -lboost_system
 
 INCLUDEPATH += ../common
+INCLUDEPATH += ../json
 
 TEMPLATE = app
 
@@ -49,4 +50,5 @@ HEADERS += \
     ../common/master.hpp \
     ../common/logger.hpp \
     ../common/cpp_defs.hpp \
-    ../common/common_defs.hpp
+    ../common/common_defs.hpp \
+    user_info.hpp

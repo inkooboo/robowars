@@ -1,13 +1,15 @@
 #include "session.hpp"
 #include "logger.hpp"
-#include "server_defs.hpp"
+#include "user_info.hpp"
 
-# include <boost/asio.hpp>
-# include <boost/bind.hpp>
+#include <json.h>
 
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 session_t::session_t(boost::asio::io_service& io_service)
     : m_socket(io_service)
+    , m_state(st_empty)
 {
 }
 
@@ -26,14 +28,13 @@ void session_t::start_read()
 
 void session_t::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
-    unused_params(bytes_transferred);
-
     if (!error)
     {
+        Json::Reader reader;
+        Json::Value parsed;
+        reader.parse(&m_data[0], &m_data[bytes_transferred], parsed, false);
 
 
-
-        start_read();
     }
     else
     {

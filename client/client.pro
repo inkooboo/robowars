@@ -17,6 +17,7 @@ macx:QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7
 macx:LIBS += -stdlib=libc++ -mmacosx-version-min=10.7
 
 INCLUDEPATH += ../common
+INCLUDEPATH += ../json
 
 SOURCES += main.cpp\
         mainwindow.cpp \

@@ -19,4 +19,7 @@ typedef std::shared_ptr<game_object_t> game_object_ptr;
 class ai_base_t;
 typedef std::shared_ptr<ai_base_t> ai_base_ptr;
 
+class user_info_t;
+typedef std::shared_ptr<user_info_t> user_info_ptr;
+
 #endif // SERVER_DEFS_HPP
