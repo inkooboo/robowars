@@ -2,4 +2,4 @@ client-build*
 server-build*
 boost_*
 .DS_Store
-*.pro*
+*.pro.user*
