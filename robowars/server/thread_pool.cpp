@@ -3,9 +3,15 @@
 #  include "logger.hpp"
 #  include <string>
 
+thread_pool_t::thread_pool_t(boost::asio::io_service &io_svc)
+    : m_io_svc(io_svc)
+{
+
+}
+
 void thread_pool_t::start()
 {
-    m_work.reset(new boost::asio::io_service::work(m_svc));
+    m_work.reset(new boost::asio::io_service::work(m_io_svc));
 
     size_t threads = std::thread::hardware_concurrency() + 1;
 
@@ -25,7 +31,7 @@ void thread_pool_t::stop()
 {
     m_work.reset();
 
-    m_svc.stop();
+    m_io_svc.stop();
 
     for (auto &i : m_threads)
     {
@@ -40,12 +46,7 @@ void thread_pool_t::stop()
 void thread_pool_t::join_thread_pool()
 {
     log<trace>() << "thread joined to thread pool:" << get_this_thread_log_name();
-    m_svc.run();
-}
-
-boost::asio::io_service & thread_pool_t::io_service()
-{
-    return m_svc;
+    m_io_svc.run();
 }
 
 void thread_pool_t::worker_thread_func(size_t n)

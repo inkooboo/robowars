@@ -7,6 +7,7 @@ class master_t;
 
 class subsystem_t : private noncopyable_t
 {
+    friend class master_t;
 public:
     virtual ~subsystem_t() {}
 

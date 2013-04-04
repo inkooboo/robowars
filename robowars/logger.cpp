@@ -20,7 +20,23 @@ namespace internal
     
     void do_log(log_level_t level, const std::string &str)
     {
-        fprintf(stderr, "%s %d %s\n", tls_name, (int)level, str.c_str());
+        const char *lvl_name = 0;
+        switch (level)
+        {
+        case debug:
+            lvl_name = "debug";
+            break;
+        case trace:
+            lvl_name = "trace";
+            break;
+        case critical:
+            lvl_name = "critical";
+            break;
+        default:
+            break;
+        }
+
+        fprintf(stderr, "{%s} <%s> %s\n", tls_name, lvl_name, str.c_str());
     }
     
     logging_stream_t::logging_stream_t(log_level_t level)

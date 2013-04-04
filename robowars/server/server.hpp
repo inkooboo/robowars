@@ -4,9 +4,11 @@
 #  include "session.hpp"
 #  include "logger.hpp"
 
+#  include "subsystem.hpp"
+
 #  include <boost/asio.hpp>
 
-class server_t
+class server_t : public subsystem_t
 {
     DEFINE_LOGGER_FOR_CLASS(server_t)
 
@@ -21,8 +23,8 @@ private:
 
     void handle_accept(session_t* new_session, const boost::system::error_code& error);
 
-    boost::asio::io_service& io_service_;
-    boost::asio::ip::tcp::acceptor acceptor_;
+    boost::asio::io_service& m_io_svc;
+    boost::asio::ip::tcp::acceptor m_acceptor;
 };
 
 #endif //_SERVER_HPP_

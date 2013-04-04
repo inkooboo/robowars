@@ -50,7 +50,8 @@ HEADERS  += \
     client/client_defs.hpp \
     server/server_defs.hpp \
     server/server.hpp \
-    subsystem.hpp
+    subsystem.hpp \
+    master.hpp
 
 FORMS    += client/mainwindow.ui
 

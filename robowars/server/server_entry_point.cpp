@@ -1,7 +1,7 @@
 #include "logger.hpp"
 #include "server.hpp"
 #include "thread_pool.hpp"
-
+#include "master.hpp"
 #include "server_defs.hpp"
 #include "shutdown_signal.hpp"
 
@@ -20,12 +20,20 @@ int server_entry_point(int argc, char* argv[], shutdown_signal_t stopper)
 
     try
     {
+        boost::asio::io_service io_svc;
 
+        master_t master;
+        master.add_subsystem<thread_pool_t>(new thread_pool_t(io_svc));
+        master.add_subsystem<server_t>(new server_t(io_svc));
+
+        master.start();
 
         while (!stopper.is_set())
         {
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
+
+        master.stop();
     }
     catch (std::exception& e)
     {
