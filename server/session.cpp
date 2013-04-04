@@ -30,35 +30,13 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
     if (!error)
     {
-//        Event evt = Event::parse(data_, bytes_transferred);
 
-//        logger::log(DEBUG) << "[Session] Event got:\n" << evt.serialize();
 
-//        if (!game)
-//        {
-//            game = master_t::subsystem<GameManager>().join_game(this, evt);
-//            if (!game)
-//            {
-//                Event notify = Event::create(EV_NOTIFY);
-//                notify["message"] = "Max game limit exceed";
-//                send_event(notify);
-//                delete this;
-//                return;
-//            }
-//        }
-//        else
-//        {
-//            game->on_event(evt);
-//        }
 
         start_read();
     }
     else
     {
-//		if (game)
-//        {
-//	        _master->subsystem<GameManager>().leave_game(game->id, this);
-//		}
         delete this;
     }
 }
@@ -70,10 +48,6 @@ void session_t::handle_write(const boost::system::error_code& error)
     }
     else
     {
-//		if (game)
-//        {
-//	        _master->subsystem<GameManager>().leave_game(game->id, this);
-//		}
         delete this;
     }
 }
