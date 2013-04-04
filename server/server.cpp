@@ -1,16 +1,15 @@
 #include "server.hpp"
 
+#include "common_defs.hpp"
 #include "master.hpp"
 #include "thread_pool.hpp"
 #include "logger.hpp"
 
 #include <boost/bind.hpp>
 
-static const int s_port = 4576;
-
 server_t::server_t(boost::asio::io_service &io_svc)
     : m_io_svc(io_svc)
-    , m_acceptor(io_svc, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), s_port))
+    , m_acceptor(io_svc, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), ROBOWARS_PORT))
 {
     log<trace>() << "create server using port " << s_port;
 }

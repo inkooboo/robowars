@@ -48,4 +48,5 @@ HEADERS += \
     ../common/noncopyable.hpp \
     ../common/master.hpp \
     ../common/logger.hpp \
-    ../common/cpp_defs.hpp
+    ../common/cpp_defs.hpp \
+    ../common/common_defs.hpp
