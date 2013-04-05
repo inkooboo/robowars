@@ -9,7 +9,7 @@ class user_info_t : private noncopyable_t
 {
 public:
     std::string user_name;
-
+    std::string password;
 };
 
 

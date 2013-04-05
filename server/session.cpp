@@ -1,6 +1,9 @@
 #include "session.hpp"
+
 #include "logger.hpp"
 #include "user_info.hpp"
+#include "master.hpp"
+#include "command_processor.hpp"
 
 #include <json.h>
 
@@ -9,8 +12,14 @@
 
 session_t::session_t(boost::asio::io_service& io_service)
     : m_socket(io_service)
-    , m_state(st_empty)
+    , m_user_info(std::make_shared<user_info_t>())
+    , m_state(st_connected)
 {
+}
+
+state_t session_t::state()
+{
+    return m_state;
 }
 
 boost::asio::ip::tcp::socket& session_t::socket()
@@ -30,40 +39,19 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 {
     if (!error)
     {
+        //realize concatenating data if not all received
+
         Json::Reader reader;
-        Json::Value parsed;
-        reader.parse(&m_data[0], &m_data[bytes_transferred], parsed, false);
+        Json::Value request;
+        reader.parse(&m_data[0], &m_data[bytes_transferred], request, false);
 
-        const Json::Value &id = parsed["id"];
-        const std::string &command = parsed["command"].asString();
+#ifdef DEBUG_PROTO
+        log<debug>() << this << "RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
+#endif
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_command(shared_from_this(), request);
 
-        switch (m_state)
-        {
-        case st_empty:
-        {
-            m_user_info = std::make_shared<user_info_t>();
-
-        }
-        break;
-        case st_connected:
-        {
-
-        }
-        break;
-        case st_authenticated:
-        {
-
-        }
-        break;
-        case st_in_game:
-        {
-
-        }
-        break;
-        default:
-        break;
-        }
-    }
+        send_message(response);
+     }
     else
     {
         delete this;
@@ -81,12 +69,21 @@ void session_t::handle_write(const boost::system::error_code& error)
     }
 }
 
-//void session_t::send_event(const Event &evt)
-//{
-//    std::string serialized = evt.serialize();
-//    logger::log(DEBUG) << "[Session] Send event:\n" << serialized;
-//    boost::asio::async_write(socket_,
-//                             boost::asio::buffer(serialized.c_str(), serialized.length()),
-//                             boost::bind(&Session::handle_write, this,
-//                             boost::asio::placeholders::error));
-//}
+void session_t::send_message(const Json::Value &response)
+{
+#ifdef DEBUG_PROTO
+    Json::StyledWriter writer;
+#else
+    Json::Writer writer;
+#endif
+    const std::string &serialized = writer.write(response);
+
+#ifdef DEBUG_PROTO
+        log<debug>() << this << "SEND:\n" << serialized;
+#endif
+
+    boost::asio::async_write(socket_,
+                             boost::asio::buffer(serialized.c_str(), serialized.length()),
+                             boost::bind(&Session::handle_write, this,
+                             boost::asio::placeholders::error));
+}

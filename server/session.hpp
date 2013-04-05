@@ -4,20 +4,32 @@
 #  include "logger.hpp"
 #  include "server_defs.hpp"
 
-#  include <boost/asio.hpp>
+#  include "noncopyable.hpp"
 
-class session_t
+#  include <json.h>
+#  include <boost/asio.hpp>
+#  include <memory>
+
+class session_t : private noncopyable_t, public std::enable_shared_from_this<session_t>
 {
     DEFINE_LOGGER_FOR_CLASS(session_t)
 public:
+    enum state_t
+    {
+          st_connected
+        , st_authenticated
+        , st_in_game
+    };
+
     session_t(boost::asio::io_service& io_service);
 
     boost::asio::ip::tcp::socket& socket();
 
     void start_read();
 
-//    void send_event(const Event &evt);
+    void send_message(const Json::Value &response);
 
+    state_t state();
 private:
     void handle_read(const boost::system::error_code& error, size_t bytes_transferred);
 
@@ -29,13 +41,7 @@ private:
 
     user_info_ptr m_user_info;
 
-    enum state_t
-    {
-          st_empty
-        , st_connected
-        , st_authenticated
-        , st_in_game
-    } m_state;
+    state_t m_state;
 };
 
 #endif //_SESSION_HPP_
