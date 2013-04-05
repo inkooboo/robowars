@@ -7,7 +7,9 @@
 //
 
 #ifndef __new_logger__cpp11_logger__
-#define __new_logger__cpp11_logger__
+#  define __new_logger__cpp11_logger__
+
+#  include "cpp_defs.hpp"
 
 #  include <sstream>
 #  include <memory>
@@ -56,6 +58,8 @@ namespace internal
 
 void set_this_thread_log_name(const char *name);
 std::string get_this_thread_log_name();
+
+void set_strict_threaded_log_output(bool strict);
 
 template <log_level_t LogLevel>
 inline internal::logging_stream_t log()

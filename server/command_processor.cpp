@@ -9,6 +9,9 @@ Json::Value command_processor_t::process_command(session_ptr &session, const Jso
 {
     Json::Value ret;
 
+    (void)session;
+    (void)command;
+
 //    const Json::Value &id = request["id"];
 //    const std::string &command = request["command"].asString();
 

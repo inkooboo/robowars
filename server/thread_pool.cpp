@@ -11,6 +11,8 @@ thread_pool_t::thread_pool_t(boost::asio::io_service &io_svc)
 
 void thread_pool_t::start()
 {
+    log<debug>() << "starting";
+
     m_work.reset(new boost::asio::io_service::work(m_io_svc));
 
     size_t threads = std::thread::hardware_concurrency() + 1;
@@ -29,6 +31,8 @@ void thread_pool_t::start()
 
 void thread_pool_t::stop()
 {
+    log<debug>() << "stopping";
+
     m_work.reset();
 
     m_io_svc.stop();
@@ -51,7 +55,7 @@ void thread_pool_t::join_thread_pool()
 
 void thread_pool_t::worker_thread_func(size_t n)
 {
-    set_this_thread_log_name(std::to_string(n).c_str());
+    set_this_thread_log_name((std::string("wrk") + std::to_string(n)).c_str());
     join_thread_pool();
 }
 

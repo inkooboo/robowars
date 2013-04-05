@@ -1,6 +1,5 @@
-#include <QCoreApplication>
-
 #include "server_defs.hpp"
+#include "cpp_defs.hpp"
 
 #include "master.hpp"
 
@@ -16,9 +15,12 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-    
-    set_this_thread_log_name("server");
+    unused_params(argc, argv);
+
+#ifdef DEBUG
+    set_strict_threaded_log_output(true);
+#endif
+    set_this_thread_log_name("main");
 
     srand((unsigned int)time(0));
 
@@ -33,11 +35,14 @@ int main(int argc, char *argv[])
 
         master.start();
 
+        master.subsystem<thread_pool_t>().join_thread_pool();
+
         master.stop();
     }
     catch (std::exception& e)
     {
         log<critical>() << "Exception: " << e.what() << "\n";
     }
-    return a.exec();
+
+    return 0;
 }

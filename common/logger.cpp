@@ -12,12 +12,16 @@
 
 #include <cstdio>
 #include <cstring>
+#include <mutex>
 
 namespace internal
 {
     
     thread_local char tls_name[255] = {0};
-    
+
+    std::mutex s_strict_output_guard;
+    bool s_strict_output = false;
+
     void do_log(log_level_t level, const std::string &str)
     {
         const char *lvl_name = 0;
@@ -36,7 +40,20 @@ namespace internal
             break;
         }
 
-        fprintf(stderr, "{%s} <%s> %s\n", tls_name, lvl_name, str.c_str());
+        auto print = [&](){
+            fprintf(stderr, "{%s} <%s> %s\n", tls_name, lvl_name, str.c_str());
+        };
+
+        if (s_strict_output)
+        {
+            std::lock_guard<std::mutex> lock(s_strict_output_guard);
+            print();
+        }
+        else
+        {
+            print();
+        }
+
     }
     
     logging_stream_t::logging_stream_t(log_level_t level)
@@ -61,3 +78,9 @@ std::string get_this_thread_log_name()
 {
     return internal::tls_name;
 }
+
+void set_strict_threaded_log_output(bool strict)
+{
+    internal::s_strict_output = strict;
+}
+

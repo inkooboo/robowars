@@ -16,12 +16,13 @@ server_t::server_t(boost::asio::io_service &io_svc)
 
 void server_t::start()
 {
-    log<trace>() << "start server";
+    log<debug>() << "starting";
     start_accept();
 }
 
 void server_t::stop()
 {
+    log<debug>() << "stopping";
 }
 
 void server_t::start_accept()
