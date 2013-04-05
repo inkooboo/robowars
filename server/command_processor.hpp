@@ -11,7 +11,7 @@
 class command_processor_t : public subsystem_t
 {
 public:
-    command_processor_t() {} // fill command handlers map
+    command_processor_t();
 
     Json::Value process_command(session_ptr &session, const Json::Value &command);
 };

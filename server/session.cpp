@@ -17,7 +17,7 @@ session_t::session_t(boost::asio::io_service& io_service)
 {
 }
 
-state_t session_t::state()
+session_t::state_t session_t::state()
 {
     return m_state;
 }
@@ -48,7 +48,8 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 #ifdef DEBUG_PROTO
         log<debug>() << this << "RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
 #endif
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_command(shared_from_this(), request);
+        session_ptr this_ptr = shared_from_this();
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_command(this_ptr, request);
 
         send_message(response);
      }
@@ -82,8 +83,8 @@ void session_t::send_message(const Json::Value &response)
         log<debug>() << this << "SEND:\n" << serialized;
 #endif
 
-    boost::asio::async_write(socket_,
+    boost::asio::async_write(m_socket,
                              boost::asio::buffer(serialized.c_str(), serialized.length()),
-                             boost::bind(&Session::handle_write, this,
+                             boost::bind(&session_t::handle_write, this,
                              boost::asio::placeholders::error));
 }
