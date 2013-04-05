@@ -1,52 +1,49 @@
 #include "command_processor.hpp"
 
+#include "commands.hpp"
+
 command_processor_t::command_processor_t()
+    : m_commands_map(COMMANDS_MAP_BUCKETS_COUNT)
 {
-  // fill command handlers map
 }
 
-Json::Value command_processor_t::process_command(session_ptr &session, const Json::Value &command)
+void command_processor_t::start()
 {
-    Json::Value ret;
+    log<debug>() << "starting";
 
-    (void)session;
-    (void)command;
+    m_commands_map = get_commands_map();
 
-//    const Json::Value &id = request["id"];
-//    const std::string &command = request["command"].asString();
+    log<debug>() << m_commands_map.size() << " commands in commands map";
+}
 
-//    response["id"] = id;
-//    switch (m_state)
-//    {
-//    case st_connected:
-//    {
-//        // accept any user =)
-//        m_user_info = std::make_shared<user_info_t>();
-//        m_user_info->user_name = request["user"].asString();
-//        m_user_info->password = request["password"].asString();
-//        response["result"] = "ok";
-//        m_state = st_authenticated;
-//        log<debug>() << this << " authetificated with name " << m_user_info->user_name;
-//        processed = true;
-//    }
-//    break;
-//    case st_authenticated:
-//    {
+void command_processor_t::stop()
+{
+    log<debug>() << "stopping";
+}
 
-//    }
-//    break;
-//    case st_in_game:
-//    {
+Json::Value command_processor_t::process_request(session_ptr &session, const Json::Value &request)
+{
+    Json::Value response;
 
-//    }
-//    break;
-//    default:
-//    break;
-//    }
+    const Json::Value &id = request["id"];
+    const std::string &command = request["command"].asString();
 
+    auto command_found = m_commands_map.find(command);
+    if (m_commands_map.end() != command_found)
+    {
+        command_iface_ptr &handler = command_found->second;
+        Json::Value result = handler->process(session, request);
+        response.swap(result);
+    }
+    else
+    {
+        response["result"] = "fail";
+        response["error"] = "command not found in command map";
+    }
 
+    response["id"] = id;
 
-    return ret;
+    return response;
 }
 
 

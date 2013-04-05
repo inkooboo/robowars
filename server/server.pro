@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     ../json/json_reader.cpp \
     ../json/json_internalmap.inl \
     ../json/json_internalarray.inl \
-    command_processor.cpp
+    command_processor.cpp \
+    commands.cpp
 
 HEADERS += \
     thread_pool.hpp \
@@ -66,4 +67,5 @@ HEADERS += \
     ../json/features.h \
     ../json/config.h \
     ../json/autolink.h \
-    command_processor.hpp
+    command_processor.hpp \
+    commands.hpp

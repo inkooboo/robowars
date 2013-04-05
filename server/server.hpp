@@ -12,8 +12,8 @@ class server_t : public subsystem_t
 {
     ADD_CLASS_PREFIX_TO_LOG(server_t)
 
-    virtual void start();
-    virtual void stop();
+    void start() override;
+    void stop() override;
 
 public:
     server_t(boost::asio::io_service &io_svc);

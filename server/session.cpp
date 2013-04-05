@@ -17,9 +17,14 @@ session_t::session_t(boost::asio::io_service& io_service)
 {
 }
 
-session_t::state_t session_t::state()
+session_t::state_t & session_t::state()
 {
     return m_state;
+}
+
+user_info_ptr & session_t::user_info()
+{
+    return m_user_info;
 }
 
 boost::asio::ip::tcp::socket& session_t::socket()
@@ -46,10 +51,10 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
         reader.parse(&m_data[0], &m_data[bytes_transferred], request, false);
 
 #ifdef DEBUG_PROTO
-        log<debug>() << this << "RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
+        log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
 #endif
-        session_ptr this_ptr = shared_from_this();
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_command(this_ptr, request);
+        session_ptr this_session_ptr = shared_from_this();
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_session_ptr, request);
 
         send_message(response);
      }

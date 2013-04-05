@@ -29,7 +29,9 @@ public:
 
     void send_message(const Json::Value &response);
 
-    state_t state();
+    user_info_ptr & user_info();
+    state_t & state();
+
 private:
     void handle_read(const boost::system::error_code& error, size_t bytes_transferred);
 
@@ -40,7 +42,6 @@ private:
     char m_data[MAX_DATA_LENGTH];
 
     user_info_ptr m_user_info;
-
     state_t m_state;
 };
 

@@ -2,9 +2,9 @@
 #  define _THREAD_POOL_HPP_
 
 #  include "logger.hpp"
-#  include <boost/asio.hpp>
-
 #  include "subsystem.hpp"
+
+#  include <boost/asio.hpp>
 
 #  include <thread>
 #  include <vector>
@@ -14,8 +14,8 @@ class thread_pool_t : public subsystem_t
 {
     ADD_CLASS_PREFIX_TO_LOG(thread_pool_t)
 
-    virtual void start();
-    virtual void stop();
+    void start() override;
+    void stop() override;
 
 public:
     thread_pool_t(boost::asio::io_service &io_svc);

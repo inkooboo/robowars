@@ -1,0 +1,4 @@
+{"id" : 0, "command" : "auth", "user" : "inkooboo", "password" : "1234"}
+
+
+
