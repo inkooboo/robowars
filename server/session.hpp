@@ -34,7 +34,7 @@ private:
           st_empty
         , st_connected
         , st_authenticated
-        , st_ingame
+        , st_in_game
     } m_state;
 };
 

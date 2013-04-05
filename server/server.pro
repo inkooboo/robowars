@@ -26,6 +26,7 @@ macx:LIBS += -lboost_system
 
 INCLUDEPATH += ../common
 INCLUDEPATH += ../json
+INCLUDEPATH += ..
 
 TEMPLATE = app
 
@@ -34,7 +35,13 @@ SOURCES += main.cpp \
     thread_pool.cpp \
     session.cpp \
     server.cpp \
-    ../common/logger.cpp
+    ../common/logger.cpp \
+    ../json/json_writer.cpp \
+    ../json/json_valueiterator.inl \
+    ../json/json_value.cpp \
+    ../json/json_reader.cpp \
+    ../json/json_internalmap.inl \
+    ../json/json_internalarray.inl
 
 HEADERS += \
     thread_pool.hpp \
@@ -51,4 +58,14 @@ HEADERS += \
     ../common/logger.hpp \
     ../common/cpp_defs.hpp \
     ../common/common_defs.hpp \
-    user_info.hpp
+    user_info.hpp \
+    ../json/writer.h \
+    ../json/value.h \
+    ../json/reader.h \
+    ../json/json.h \
+    ../json/json_tool.h \
+    ../json/json_batchallocator.h \
+    ../json/forwards.h \
+    ../json/features.h \
+    ../json/config.h \
+    ../json/autolink.h

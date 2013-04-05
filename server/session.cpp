@@ -34,7 +34,35 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
         Json::Value parsed;
         reader.parse(&m_data[0], &m_data[bytes_transferred], parsed, false);
 
+        const Json::Value &id = parsed["id"];
+        const std::string &command = parsed["command"].asString();
 
+        switch (m_state)
+        {
+        case st_empty:
+        {
+            m_user_info = std::make_shared<user_info_t>();
+
+        }
+        break;
+        case st_connected:
+        {
+
+        }
+        break;
+        case st_authenticated:
+        {
+
+        }
+        break;
+        case st_in_game:
+        {
+
+        }
+        break;
+        default:
+        break;
+        }
     }
     else
     {

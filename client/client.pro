@@ -18,10 +18,17 @@ macx:LIBS += -stdlib=libc++ -mmacosx-version-min=10.7
 
 INCLUDEPATH += ../common
 INCLUDEPATH += ../json
+INCLUDEPATH += ..
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ../common/logger.cpp
+    ../common/logger.cpp \
+    ../json/json_writer.cpp \
+    ../json/json_valueiterator.inl \
+    ../json/json_value.cpp \
+    ../json/json_reader.cpp \
+    ../json/json_internalmap.inl \
+    ../json/json_internalarray.inl
 
 HEADERS  += mainwindow.h \
     ../common/subsystem.hpp \
@@ -30,6 +37,16 @@ HEADERS  += mainwindow.h \
     ../common/master.hpp \
     ../common/logger.hpp \
     ../common/cpp_defs.hpp \
-    ../common/common_defs.hpp
+    ../common/common_defs.hpp \
+    ../json/writer.h \
+    ../json/value.h \
+    ../json/reader.h \
+    ../json/json.h \
+    ../json/json_tool.h \
+    ../json/json_batchallocator.h \
+    ../json/forwards.h \
+    ../json/features.h \
+    ../json/config.h \
+    ../json/autolink.h
 
 FORMS    += mainwindow.ui

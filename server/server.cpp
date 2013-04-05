@@ -11,7 +11,7 @@ server_t::server_t(boost::asio::io_service &io_svc)
     : m_io_svc(io_svc)
     , m_acceptor(io_svc, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), ROBOWARS_PORT))
 {
-    log<trace>() << "create server using port " << s_port;
+    log<trace>() << "create server using port " << ROBOWARS_PORT;
 }
 
 void server_t::start()

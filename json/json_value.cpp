@@ -1716,6 +1716,7 @@ Path::addPathInArg( const std::string &path,
                     InArgs::const_iterator &itInArg, 
                     PathArgument::Kind kind )
 {
+   (void)path;
    if ( itInArg == in.end() )
    {
       // Error: missing argument %d
@@ -1735,6 +1736,8 @@ void
 Path::invalidPath( const std::string &path, 
                    int location )
 {
+    (void)path;
+    (void)location;
    // Error: invalid path.
 }
 
