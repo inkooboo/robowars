@@ -65,7 +65,7 @@ inline internal::logging_stream_t log()
     return internal::logging_stream_t(LogLevel);
 }
 
-#define DEFINE_LOGGER_FOR_CLASS(class_name) \
+#define ADD_CLASS_PREFIX_TO_LOG(class_name) \
     template <log_level_t LogLevel> \
     internal::logging_stream_t log() { \
         internal::logging_stream_t ret(LogLevel); \

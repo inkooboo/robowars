@@ -10,7 +10,7 @@
 
 class server_t : public subsystem_t
 {
-    DEFINE_LOGGER_FOR_CLASS(server_t)
+    ADD_CLASS_PREFIX_TO_LOG(server_t)
 
     virtual void start();
     virtual void stop();

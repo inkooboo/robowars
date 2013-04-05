@@ -12,7 +12,7 @@
 
 class session_t : private noncopyable_t, public std::enable_shared_from_this<session_t>
 {
-    DEFINE_LOGGER_FOR_CLASS(session_t)
+    ADD_CLASS_PREFIX_TO_LOG(session_t)
 public:
     enum state_t
     {

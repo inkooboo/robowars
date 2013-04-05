@@ -12,7 +12,7 @@
 
 class thread_pool_t : public subsystem_t
 {
-    DEFINE_LOGGER_FOR_CLASS(thread_pool_t)
+    ADD_CLASS_PREFIX_TO_LOG(thread_pool_t)
 
     virtual void start();
     virtual void stop();
