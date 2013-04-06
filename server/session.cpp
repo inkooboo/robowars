@@ -66,7 +66,8 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 #ifdef DEBUG_PROTO
         log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
 #endif
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(m_this_ptr, request);
+        session_ptr session_holder = m_this_ptr;
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(session_holder, request);
 
         send_message(response);
      }
