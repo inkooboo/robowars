@@ -1,9 +1,8 @@
 #ifndef _SERVER_HPP_
 # define _SERVER_HPP_
 
-#  include "session.hpp"
 #  include "logger.hpp"
-
+#  include "server_defs.hpp"
 #  include "subsystem.hpp"
 
 #  include <boost/asio.hpp>
@@ -21,7 +20,7 @@ public:
 private:
     void start_accept();
 
-    void handle_accept(session_t* new_session, const boost::system::error_code& error);
+    void handle_accept(session_ptr &new_session, const boost::system::error_code& error);
 
     boost::asio::io_service& m_io_svc;
     boost::asio::ip::tcp::acceptor m_acceptor;
