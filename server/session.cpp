@@ -57,6 +57,8 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
         const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this, request);
 
         send_message(response);
+
+        start_read();
      }
     else
     {
