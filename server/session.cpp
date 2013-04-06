@@ -4,6 +4,7 @@
 #include "user_info.hpp"
 #include "master.hpp"
 #include "command_processor.hpp"
+#include "session_manager.hpp"
 
 #include <json.h>
 
@@ -17,18 +18,10 @@ session_t::session_t(boost::asio::io_service& io_service)
 {
 }
 
-session_ptr session_t::create(boost::asio::io_service& io_service)
+boost::asio::ip::tcp::socket & session_t::socket()
 {
-    session_ptr ret(new session_t(io_service));
-    ret->m_this_ptr = ret;
-    return ret;
+    return m_socket;
 }
-
-void session_t::destroy()
-{
-    m_this_ptr.reset();
-}
-
 
 session_t::state_t & session_t::state()
 {
@@ -38,11 +31,6 @@ session_t::state_t & session_t::state()
 user_info_ptr & session_t::user_info()
 {
     return m_user_info;
-}
-
-boost::asio::ip::tcp::socket& session_t::socket()
-{
-    return m_socket;
 }
 
 void session_t::start_read()
@@ -66,14 +54,13 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 #ifdef DEBUG_PROTO
         log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
 #endif
-        session_ptr session_holder = m_this_ptr;
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(session_holder, request);
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this, request);
 
         send_message(response);
      }
     else
     {
-        destroy();
+        master_t::subsystem<session_manager_t>().end_session(this);
     }
 }
 
@@ -84,7 +71,7 @@ void session_t::handle_write(const boost::system::error_code& error)
     }
     else
     {
-        destroy();
+        master_t::subsystem<session_manager_t>().end_session(this);
     }
 }
 

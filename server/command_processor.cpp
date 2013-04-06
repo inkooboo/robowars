@@ -21,7 +21,7 @@ void command_processor_t::stop()
     log<debug>() << "stopping";
 }
 
-Json::Value command_processor_t::process_request(session_ptr &session, const Json::Value &request)
+Json::Value command_processor_t::process_request(session_t *session, const Json::Value &request)
 {
     Json::Value response;
 

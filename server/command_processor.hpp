@@ -19,7 +19,7 @@ class command_processor_t : public subsystem_t
 public:
     command_processor_t();
 
-    Json::Value process_request(session_ptr &session, const Json::Value &request);
+    Json::Value process_request(session_t *session, const Json::Value &request);
 
 private:
     commands_map_t m_commands_map;

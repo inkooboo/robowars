@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     ../json/json_internalmap.inl \
     ../json/json_internalarray.inl \
     command_processor.cpp \
-    commands.cpp
+    commands.cpp \
+    session_manager.cpp
 
 HEADERS += \
     thread_pool.hpp \
@@ -68,4 +69,5 @@ HEADERS += \
     ../json/config.h \
     ../json/autolink.h \
     command_processor.hpp \
-    commands.hpp
+    commands.hpp \
+    session_manager.hpp

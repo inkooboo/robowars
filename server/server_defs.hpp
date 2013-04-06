@@ -37,4 +37,7 @@ class command_iface_t;
 typedef std::shared_ptr<command_iface_t> command_iface_ptr;
 typedef std::unordered_map<std::string, command_iface_ptr> commands_map_t;
 
+class match_t;
+typedef std::shared_ptr<match_t> match_ptr;
+
 #endif // SERVER_DEFS_HPP

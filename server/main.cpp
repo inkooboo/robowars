@@ -7,6 +7,7 @@
 #include "server.hpp"
 #include "thread_pool.hpp"
 #include "command_processor.hpp"
+#include "session_manager.hpp"
 
 #include <cstdlib>
 #include <ctime>
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
         master.add_managed_subsystem<thread_pool_t>(std::ref(io_svc));
         master.add_managed_subsystem<server_t>(std::ref(io_svc));
         master.add_managed_subsystem<command_processor_t>();
+        master.add_managed_subsystem<session_manager_t>(std::ref(io_svc));
 
         master.start();
 

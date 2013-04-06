@@ -11,7 +11,7 @@ class command_iface_t : private noncopyable_t
 {
 public:
     virtual ~command_iface_t() {}
-    virtual Json::Value process(session_ptr &session, const Json::Value &request) = 0;
+    virtual Json::Value process(session_t *session, const Json::Value &request) = 0;
 };
 
 commands_map_t get_commands_map();

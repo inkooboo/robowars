@@ -9,8 +9,8 @@
 #ifndef MATCH_HPP
 #  define MATCH_HPP
 
+#  include "server_defs.hpp"
 #  include "noncopyable.hpp"
-#  include "session.hpp"
 #  inlcude "field.hpp"
 
 #  include <memory>
@@ -18,7 +18,7 @@
 class match_t : private noncopyable_t
 {
 public:
-    std::shared_ptr<session_t> client_session; //in future will be array of players sessions
+    session_ptr session; //in future will be array of players sessions
 
 
     void on_time_chunk(float dt);

@@ -5,7 +5,7 @@
 
 struct auth_command_t : public command_iface_t
 {
-    Json::Value process(session_ptr &session, const Json::Value &request) override
+    Json::Value process(session_t *session, const Json::Value &request) override
     {
         Json::Value result;
 
@@ -26,7 +26,7 @@ struct auth_command_t : public command_iface_t
             session->state() = session_t::st_authenticated;
             session->user_info() = user_info;
 
-            log<debug>() << session.get() << " sucessfully authetificated with name " << user_info->user_name;
+            log<debug>() << session << " sucessfully authetificated with name " << user_info->user_name;
 
             result["result"] = "ok";
         }
@@ -37,7 +37,7 @@ struct auth_command_t : public command_iface_t
 
 struct ready_for_game_command_t : public command_iface_t
 {
-    Json::Value process(session_ptr &session, const Json::Value &request) override
+    Json::Value process(session_t *session, const Json::Value &request) override
     {
         Json::Value result;
 
