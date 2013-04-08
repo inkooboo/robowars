@@ -20,7 +20,7 @@ public:
     session_manager_t(boost::asio::io_service &io_svc);
 
     session_ptr create_session();
-    void end_session(session_t *session);
+    void end_session(session_ptr &session);
 
     boost::asio::io_service &m_io_svc;
 

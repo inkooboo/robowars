@@ -64,7 +64,16 @@ namespace internal
 
     logging_stream_t::~logging_stream_t()
     {
-        do_log(level, stream->str());
+        const static log_level_t min_log_level =
+#ifdef DEBUG
+                debug;
+#else
+                trace;
+#endif
+            if (level >= min_log_level)
+            {
+                do_log(level, stream->str());
+            }
     }
 
 } //namespace internal

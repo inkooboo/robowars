@@ -11,7 +11,7 @@
 #  include <memory>
 #  include <mutex>
 
-class session_t : private noncopyable_t
+class session_t : private noncopyable_t, public std::enable_shared_from_this<session_t>
 {
     ADD_CLASS_PREFIX_TO_LOG(session_t)
 public:
@@ -23,6 +23,7 @@ public:
     };
 
     session_t(boost::asio::io_service& io_service);
+    ~session_t();
 
     void start_read();
 

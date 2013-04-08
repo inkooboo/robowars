@@ -29,15 +29,11 @@ session_ptr session_manager_t::create_session()
     return new_session;
 }
 
-void session_manager_t::end_session(session_t *session)
+void session_manager_t::end_session(session_ptr &session)
 {
-    auto null_deleter = [](session_t *){};
-
-    log<debug>() << "end session " << session;
+    log<debug>() << "end session " << session.get();
 
     std::lock_guard<std::mutex> lock(m_guard);
-    std::shared_ptr<session_t> shared(session, null_deleter);
-
-    m_sessions.erase(shared);
+    m_sessions.erase(session);
 }
 

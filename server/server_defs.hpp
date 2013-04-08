@@ -14,7 +14,9 @@
 #  include <memory>
 #  include <unordered_map>
 
-#  define DEBUG_PROTO 1
+#  ifdef DEBUG
+#    define DEBUG_PROTO 1
+#  endif
 
 const static size_t COMMANDS_MAP_BUCKETS_COUNT = 1024;
 

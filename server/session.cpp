@@ -18,6 +18,11 @@ session_t::session_t(boost::asio::io_service& io_service)
 {
 }
 
+session_t::~session_t()
+{
+    log<debug>() << this << " session destructed";
+}
+
 boost::asio::ip::tcp::socket & session_t::socket()
 {
     return m_socket;
@@ -36,13 +41,15 @@ user_info_ptr & session_t::user_info()
 void session_t::start_read()
 {
     m_socket.async_read_some(boost::asio::buffer(m_data, MAX_DATA_LENGTH),
-                            boost::bind(&session_t::handle_read, this,
+                             boost::bind(&session_t::handle_read, shared_from_this(),
                             boost::asio::placeholders::error,
                             boost::asio::placeholders::bytes_transferred));
 }
 
 void session_t::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
+    session_ptr this_ptr = shared_from_this();
+
     if (!error)
     {
         //realize concatenating data if not all received
@@ -54,7 +61,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 #ifdef DEBUG_PROTO
         log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
 #endif
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this, request);
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
 
         send_message(response);
 
@@ -62,27 +69,31 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
      }
     else
     {
-        master_t::subsystem<session_manager_t>().end_session(this);
+        master_t::subsystem<session_manager_t>().end_session(this_ptr);
     }
 }
 
 void session_t::handle_write(const boost::system::error_code& error)
 {
+    session_ptr this_ptr = shared_from_this();
+
     if (!error)
     {
     }
     else
     {
-        master_t::subsystem<session_manager_t>().end_session(this);
+        master_t::subsystem<session_manager_t>().end_session(this_ptr);
     }
 }
 
 void session_t::send_message(const Json::Value &response)
 {
+    session_ptr this_ptr = shared_from_this();
+
 #ifdef DEBUG_PROTO
     Json::StyledWriter writer;
 #else
-    Json::Writer writer;
+    Json::FastWriter writer;
 #endif
     const std::string &serialized = writer.write(response);
 
@@ -92,6 +103,6 @@ void session_t::send_message(const Json::Value &response)
 
     boost::asio::async_write(m_socket,
                              boost::asio::buffer(serialized.c_str(), serialized.length()),
-                             boost::bind(&session_t::handle_write, this,
+                             boost::bind(&session_t::handle_write, this_ptr,
                              boost::asio::placeholders::error));
 }

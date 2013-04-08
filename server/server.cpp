@@ -42,7 +42,7 @@ void server_t::handle_accept(session_ptr &new_session, const boost::system::erro
     }
     else
     {
-        master_t::subsystem<session_manager_t>().end_session(new_session.get());
+        master_t::subsystem<session_manager_t>().end_session(new_session);
     }
 
     start_accept();
