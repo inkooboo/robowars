@@ -14,6 +14,7 @@
 #  include <memory>
 #  include <unordered_map>
 #  include <set>
+#  include <functional>
 
 #  ifdef DEBUG
 #    define DEBUG_PROTO 1
@@ -23,6 +24,7 @@ const static size_t COMMANDS_MAP_BUCKETS_COUNT = 1024;
 
 class game_object_t;
 typedef std::shared_ptr<game_object_t> game_object_ptr;
+typedef std::set<game_object_ptr> game_object_set_t;
 
 class ai_base_t;
 typedef std::shared_ptr<ai_base_t> ai_base_ptr;
@@ -45,5 +47,10 @@ class match_t;
 typedef std::shared_ptr<match_t> match_ptr;
 typedef std::weak_ptr<match_t> match_weak_ptr;
 typedef std::set<match_ptr> match_set_t;
+
+typedef std::function<void()> handler_t;
+
+class field_t;
+typedef std::shared_ptr<field_t> field_ptr;
 
 #endif // SERVER_DEFS_HPP

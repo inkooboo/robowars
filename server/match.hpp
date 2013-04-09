@@ -11,11 +11,12 @@
 
 #  include "server_defs.hpp"
 #  include "noncopyable.hpp"
-#  include "field.hpp"
 
 #  include <boost/asio.hpp>
+#  include <memory>
+#  include <chrono>
 
-class match_t : private noncopyable_t
+class match_t : private noncopyable_t, public std::enable_shared_from_this<match_t>
 {
 public:
     match_t(const session_set_t &sessions, boost::asio::io_service &io_svc);
@@ -24,10 +25,27 @@ public:
 
     session_set_t & sessions();
 
+    void start();
+    void stop();
+
 private:
+    enum state_t
+    {
+          st_created
+        , st_started
+        , st_in_game
+        , st_ending
+    } m_state;
+
+
     boost::asio::io_service &m_io_svc;
 
     session_set_t m_sessions;
+
+    field_ptr m_field;
+
+    std::chrono::high_resolution_clock::time_point m_last_time;
+    float m_xserver_message_time_ms;
 };
 
 #endif // MATCH_HPP

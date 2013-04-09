@@ -22,13 +22,15 @@ public:
     ai_base_ptr ai;
     
     size_t id;
-
     std::string type;
+    std::string owner;
 
     float max_speed;
+    float mass;
+    float force;
 
     vector3 position;
-    vector3 direction;
+    vector3 speed;
 };
 
 

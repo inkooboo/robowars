@@ -10,6 +10,7 @@
 #  include <boost/asio.hpp>
 #  include <memory>
 #  include <atomic>
+#  include <vector>
 
 class session_t : private noncopyable_t, public std::enable_shared_from_this<session_t>
 {
@@ -29,6 +30,8 @@ public:
     void start_read();
 
     void send_message(const Json::Value &response);
+
+    void send_data(const char *begin, size_t size);
 
     boost::asio::ip::tcp::socket & socket();
     user_info_ptr & user_info();

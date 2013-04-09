@@ -10,16 +10,24 @@
 #define FIELD_HPP
 
 #  include "noncopyable.hpp"
-#  include "game_object.hpp"
+#  include "server_defs.hpp"
 
 #  include <map>
+#  include <mutex>
+#  include <vector>
 
 class field_t : private noncopyable_t
 {
 public:
-    std::map<size_t, game_object_t> m_objects;
-    
-    void on_time_chunk(float dt);
+    field_t();
+
+    void on_time_chunk(float dt_ms);
+
+    std::string xserver_field_dump();
+
+private:
+    game_object_set_t m_objects;
+    std::mutex m_objects_guard;
 };
 
 #endif // FIELD_HPP

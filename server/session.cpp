@@ -114,13 +114,6 @@ void session_t::handle_write(const boost::system::error_code& error)
 
 void session_t::send_message(const Json::Value &response)
 {
-    if (!m_valid.load())
-    {
-        return;
-    }
-
-    session_ptr this_ptr = shared_from_this();
-
 #ifdef DEBUG_PROTO
     Json::StyledWriter writer;
 #else
@@ -132,8 +125,19 @@ void session_t::send_message(const Json::Value &response)
         log<debug>() << this << " SEND:\n" << serialized;
 #endif
 
+    send_data(&serialized[0], serialized.length());
+}
+
+void session_t::send_data(const char *begin, size_t size)
+{
+    if (!m_valid.load())
+    {
+        return;
+    }
+
     boost::asio::async_write(m_socket,
-                             boost::asio::buffer(serialized.c_str(), serialized.length()),
-                             boost::bind(&session_t::handle_write, this_ptr,
+                             boost::asio::buffer(begin, size),
+                             boost::bind(&session_t::handle_write, shared_from_this(),
                              boost::asio::placeholders::error));
 }
+

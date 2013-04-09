@@ -42,7 +42,10 @@ SOURCES += main.cpp \
     commands.cpp \
     session_manager.cpp \
     match_manager.cpp \
-    match.cpp
+    match.cpp \
+    scheduler.cpp \
+    field.cpp \
+    xserver_writer.cpp
 
 HEADERS += \
     thread_pool.hpp \
@@ -73,4 +76,6 @@ HEADERS += \
     command_processor.hpp \
     commands.hpp \
     session_manager.hpp \
-    match_manager.hpp
+    match_manager.hpp \
+    scheduler.hpp \
+    xserver_writer.hpp
