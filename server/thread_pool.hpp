@@ -25,7 +25,7 @@ public:
 private:
     void worker_thread_func(size_t n);
 
-    boost::asio::io_service& m_io_svc;
+    boost::asio::io_service &m_io_svc;
     std::unique_ptr<boost::asio::io_service::work> m_work;
 
     std::vector<std::thread> m_threads;

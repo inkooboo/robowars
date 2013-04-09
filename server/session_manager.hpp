@@ -7,7 +7,6 @@
 
 #  include <boost/asio.hpp>
 #  include <mutex>
-#  include <set>
 
 class session_manager_t : public subsystem_t
 {
@@ -25,7 +24,7 @@ public:
     boost::asio::io_service &m_io_svc;
 
     std::mutex m_guard;
-    std::set<session_ptr> m_sessions;
+    session_set_t m_sessions;
 };
 
 #endif // SESSION_MANAGER_HPP

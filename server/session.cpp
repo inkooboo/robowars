@@ -15,6 +15,7 @@ session_t::session_t(boost::asio::io_service& io_service)
     : m_socket(io_service)
     , m_user_info(std::make_shared<user_info_t>())
     , m_state(st_connected)
+    , m_valid(true)
 {
 }
 
@@ -38,16 +39,36 @@ user_info_ptr & session_t::user_info()
     return m_user_info;
 }
 
+std::atomic<bool> & session_t::valid()
+{
+    return m_valid;
+}
+
+match_weak_ptr & session_t::match()
+{
+    return m_match;
+}
+
 void session_t::start_read()
 {
+    if (!m_valid.load())
+    {
+        return;
+    }
+
     m_socket.async_read_some(boost::asio::buffer(m_data, MAX_DATA_LENGTH),
                              boost::bind(&session_t::handle_read, shared_from_this(),
-                            boost::asio::placeholders::error,
-                            boost::asio::placeholders::bytes_transferred));
+                             boost::asio::placeholders::error,
+                             boost::asio::placeholders::bytes_transferred));
 }
 
 void session_t::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
+    if (!m_valid.load())
+    {
+        return;
+    }
+
     session_ptr this_ptr = shared_from_this();
 
     if (!error)
@@ -75,6 +96,11 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
 void session_t::handle_write(const boost::system::error_code& error)
 {
+    if (!m_valid.load())
+    {
+        return;
+    }
+
     session_ptr this_ptr = shared_from_this();
 
     if (!error)
@@ -88,6 +114,11 @@ void session_t::handle_write(const boost::system::error_code& error)
 
 void session_t::send_message(const Json::Value &response)
 {
+    if (!m_valid.load())
+    {
+        return;
+    }
+
     session_ptr this_ptr = shared_from_this();
 
 #ifdef DEBUG_PROTO

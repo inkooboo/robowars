@@ -40,7 +40,9 @@ SOURCES += main.cpp \
     ../json/json_internalarray.inl \
     command_processor.cpp \
     commands.cpp \
-    session_manager.cpp
+    session_manager.cpp \
+    match_manager.cpp \
+    match.cpp
 
 HEADERS += \
     thread_pool.hpp \
@@ -70,4 +72,5 @@ HEADERS += \
     ../json/autolink.h \
     command_processor.hpp \
     commands.hpp \
-    session_manager.hpp
+    session_manager.hpp \
+    match_manager.hpp

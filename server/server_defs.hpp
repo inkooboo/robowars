@@ -13,6 +13,7 @@
 
 #  include <memory>
 #  include <unordered_map>
+#  include <set>
 
 #  ifdef DEBUG
 #    define DEBUG_PROTO 1
@@ -31,6 +32,7 @@ typedef std::shared_ptr<user_info_t> user_info_ptr;
 
 class session_t;
 typedef std::shared_ptr<session_t> session_ptr;
+typedef std::set<session_ptr> session_set_t;
 
 class command_processor_t;
 typedef std::shared_ptr<command_processor_t> command_processor_ptr;
@@ -41,5 +43,7 @@ typedef std::unordered_map<std::string, command_iface_ptr> commands_map_t;
 
 class match_t;
 typedef std::shared_ptr<match_t> match_ptr;
+typedef std::weak_ptr<match_t> match_weak_ptr;
+typedef std::set<match_ptr> match_set_t;
 
 #endif // SERVER_DEFS_HPP

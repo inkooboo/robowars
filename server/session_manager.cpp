@@ -22,7 +22,7 @@ session_ptr session_manager_t::create_session()
 {
     session_ptr new_session = std::make_shared<session_t>(m_io_svc);
 
-    log<debug>() << "created session " << new_session.get();
+    log<debug>() << "created new listening session " << new_session.get();
 
     std::lock_guard<std::mutex> lock(m_guard);
     m_sessions.insert(new_session);
@@ -31,6 +31,8 @@ session_ptr session_manager_t::create_session()
 
 void session_manager_t::end_session(session_ptr &session)
 {
+    session->valid().store(false);
+
     log<debug>() << "end session " << session.get();
 
     std::lock_guard<std::mutex> lock(m_guard);
