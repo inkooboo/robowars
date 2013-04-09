@@ -40,7 +40,6 @@ SOURCES += main.cpp \
     ../json/json_internalarray.inl \
     command_processor.cpp \
     commands.cpp \
-    session_manager.cpp \
     match_manager.cpp \
     match.cpp \
     scheduler.cpp \
@@ -75,7 +74,6 @@ HEADERS += \
     ../json/autolink.h \
     command_processor.hpp \
     commands.hpp \
-    session_manager.hpp \
     match_manager.hpp \
     scheduler.hpp \
     xserver_writer.hpp \

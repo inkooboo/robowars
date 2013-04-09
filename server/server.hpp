@@ -20,7 +20,7 @@ public:
 private:
     void start_accept();
 
-    void handle_accept(session_ptr &new_session, const boost::system::error_code& error);
+    void handle_accept(session_ptr new_session, const boost::system::error_code& error);
 
     boost::asio::io_service& m_io_svc;
     boost::asio::ip::tcp::acceptor m_acceptor;

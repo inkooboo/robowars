@@ -5,7 +5,6 @@
 #include "thread_pool.hpp"
 #include "logger.hpp"
 #include "session.hpp"
-#include "session_manager.hpp"
 
 #include <boost/bind.hpp>
 #include <memory>
@@ -30,11 +29,11 @@ void server_t::stop()
 
 void server_t::start_accept()
 {
-    session_ptr new_session = master_t::subsystem<session_manager_t>().create_session();
+    session_ptr new_session = std::make_shared<session_t>(m_io_svc);
     m_acceptor.async_accept(new_session->socket(), boost::bind(&server_t::handle_accept, this, new_session, boost::asio::placeholders::error));
 }
 
-void server_t::handle_accept(session_ptr &new_session, const boost::system::error_code& error)
+void server_t::handle_accept(session_ptr new_session, const boost::system::error_code& error)
 {
     if (!error)
     {
@@ -42,7 +41,7 @@ void server_t::handle_accept(session_ptr &new_session, const boost::system::erro
     }
     else
     {
-        master_t::subsystem<session_manager_t>().end_session(new_session);
+        new_session->valid() = false;
     }
 
     start_accept();

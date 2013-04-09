@@ -1,5 +1,6 @@
 #include "match_manager.hpp"
 #include "session.hpp"
+#include <mutex>
 
 match_manager_t::match_manager_t(boost::asio::io_service &io_svc)
     : m_io_svc(io_svc)

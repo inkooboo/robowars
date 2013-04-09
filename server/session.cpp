@@ -4,7 +4,6 @@
 #include "user_info.hpp"
 #include "master.hpp"
 #include "command_processor.hpp"
-#include "session_manager.hpp"
 
 #include <json.h>
 
@@ -51,7 +50,7 @@ match_weak_ptr & session_t::match()
 
 void session_t::start_read()
 {
-    if (!m_valid.load())
+    if (!m_valid)
     {
         return;
     }
@@ -64,7 +63,7 @@ void session_t::start_read()
 
 void session_t::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
-    if (!m_valid.load())
+    if (!m_valid)
     {
         return;
     }
@@ -73,7 +72,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
     if (error)
     {
-        master_t::subsystem<session_manager_t>().end_session(this_ptr);
+        m_valid = false;
         return;
     }
 
@@ -81,7 +80,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
     {
         const static char message[] = "{ \"error\" : \"TOO BIG PACKET. ABORTED!!!\"}";
         send_data(message, sizeof(message));
-        master_t::subsystem<session_manager_t>().end_session(this_ptr);
+        m_valid = false;
         return;
     }
 
@@ -101,7 +100,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
 void session_t::handle_write(const boost::system::error_code& error)
 {
-    if (!m_valid.load())
+    if (!m_valid)
     {
         return;
     }
@@ -113,7 +112,7 @@ void session_t::handle_write(const boost::system::error_code& error)
     }
     else
     {
-        master_t::subsystem<session_manager_t>().end_session(this_ptr);
+        m_valid = false;
     }
 }
 
@@ -135,7 +134,7 @@ void session_t::send_message(const Json::Value &response)
 
 void session_t::send_data(const char *begin, size_t size)
 {
-    if (!m_valid.load())
+    if (!m_valid)
     {
         return;
     }

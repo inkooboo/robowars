@@ -45,7 +45,7 @@ private:
     void handle_write(const boost::system::error_code& error);
 
     boost::asio::ip::tcp::socket m_socket;
-    const static int MAX_DATA_LENGTH = 8192;
+    const static size_t MAX_DATA_LENGTH = 8192;
     char m_data[MAX_DATA_LENGTH];
 
     user_info_ptr m_user_info;
