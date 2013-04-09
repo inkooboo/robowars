@@ -11,15 +11,17 @@
 
 #  include "server_defs.hpp"
 #  include "noncopyable.hpp"
-
+#  include "logger.hpp"
 #  include <boost/asio.hpp>
 #  include <memory>
 #  include <chrono>
 
 class match_t : private noncopyable_t, public std::enable_shared_from_this<match_t>
 {
+    ADD_CLASS_PREFIX_TO_LOG(match_t)
 public:
     match_t(const session_set_t &sessions, boost::asio::io_service &io_svc);
+    ~match_t();
 
     void on_time_chunk();
 

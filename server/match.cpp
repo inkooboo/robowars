@@ -3,6 +3,7 @@
 #include "scheduler.hpp"
 #include "master.hpp"
 #include "field.hpp"
+#include "match_manager.hpp"
 
 const static size_t TIME_PER_SIMULATION_TICK_MS = 25;
 const static size_t TIME_PER_XSERVER_MESSAGE_MS = 100;
@@ -13,14 +14,19 @@ match_t::match_t(const session_set_t &sessions, boost::asio::io_service &io_svc)
     , m_sessions(sessions)
     , m_field(std::make_shared<field_t>())
 {
+    log<debug>() << "created match " << this;
+}
 
+match_t::~match_t()
+{
+    log<debug>() << "destroyed match " << this;
 }
 
 void match_t::on_time_chunk()
 {
     if (st_ending == m_state)
     {
-        log<debug>() << "match stopped" << this;
+        log<debug>() << "match stopped " << this;
         return;
     }
 
@@ -43,9 +49,22 @@ void match_t::on_time_chunk()
 
         std::string xserver_message = m_field->xserver_field_dump();
 
+        bool all_session_invalid = true;
         for (auto &s : m_sessions)
         {
+            if (s->valid())
+            {
+                all_session_invalid = false;
+            }
+
             s->send_data(&xserver_message[0], xserver_message.length());
+        }
+
+        if (all_session_invalid)
+        {
+            // all disconnected
+            // shutdown match
+            stop();
         }
     }
 }
@@ -89,6 +108,8 @@ void match_t::stop()
 {
     log<debug>() << "stopping match " << this;
     m_state = st_ending;
+    match_manager_t &manger = master_t::subsystem<match_manager_t>();
+    master_t::subsystem<scheduler_t>().schedule(std::bind(&match_manager_t::remove_match, &manger, shared_from_this()), 1000);
 }
 
 

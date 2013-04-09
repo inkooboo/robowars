@@ -22,6 +22,7 @@ public:
     void add_match_ready_session(session_ptr &session);
     void remove_match_ready_session(session_ptr &session);
 
+    void remove_match(match_ptr match);
 private:
 
     void try_to_create_match();

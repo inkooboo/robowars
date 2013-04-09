@@ -37,7 +37,7 @@ struct auth_command_t : public command_iface_t
     }
 };
 
-struct ready_for_game_command_t : public command_iface_t
+struct find_match_command_t : public command_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {
@@ -66,7 +66,7 @@ struct ready_for_game_command_t : public command_iface_t
 };
 
 
-struct disable_ready_for_game_command_t : public command_iface_t
+struct disable_find_match_command_t : public command_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {
@@ -94,7 +94,7 @@ struct disable_ready_for_game_command_t : public command_iface_t
     }
 };
 
-struct check_game_status_command_t : public command_iface_t
+struct ready_for_game_command_t : public command_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {
@@ -147,9 +147,9 @@ commands_map_t get_commands_map()
     (
         {
               {"auth", std::make_shared<auth_command_t>()}
+            , {"find_match", std::make_shared<find_match_command_t>()}
+            , {"disable_find_match", std::make_shared<disable_find_match_command_t>()}
             , {"ready_for_game", std::make_shared<ready_for_game_command_t>()}
-            , {"disable_ready_for_game", std::make_shared<disable_ready_for_game_command_t>()}
-            , {"check_game_status", std::make_shared<check_game_status_command_t>()}
 
         }
         , COMMANDS_MAP_BUCKETS_COUNT

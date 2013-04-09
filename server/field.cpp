@@ -19,6 +19,8 @@ field_t::field_t()
 
     test->position = vector3();
     test->speed = vector3(0.1f, 0.f, 0.f);
+
+    m_objects.insert(test);
 }
 
 

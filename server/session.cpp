@@ -16,6 +16,7 @@ session_t::session_t(boost::asio::io_service& io_service)
     , m_state(st_connected)
     , m_valid(true)
 {
+    log<debug>() << this << " session created";
 }
 
 session_t::~session_t()

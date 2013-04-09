@@ -71,3 +71,10 @@ void match_manager_t::try_to_create_match()
 
     match->start();
 }
+
+void match_manager_t::remove_match(match_ptr match)
+{
+    std::lock_guard<spinlock_t> lock(m_match_guard);
+    m_matches.erase(match);
+
+}
