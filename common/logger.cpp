@@ -12,6 +12,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include "spinlock.hpp"
 #include <mutex>
 
 namespace internal
@@ -19,7 +20,7 @@ namespace internal
     
     thread_local char tls_name[255] = {0};
 
-    std::mutex s_strict_output_guard;
+    spinlock_t s_strict_output_guard;
     bool s_strict_output = false;
 
     void do_log(log_level_t level, const std::string &str)
@@ -46,7 +47,7 @@ namespace internal
 
         if (s_strict_output)
         {
-            std::lock_guard<std::mutex> lock(s_strict_output_guard);
+            std::lock_guard<spinlock_t> lock(s_strict_output_guard);
             print();
         }
         else
