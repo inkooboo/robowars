@@ -71,27 +71,32 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
     session_ptr this_ptr = shared_from_this();
 
-    if (!error)
-    {
-        //realize concatenating data if not all received
-
-        Json::Reader reader;
-        Json::Value request;
-        reader.parse(&m_data[0], &m_data[bytes_transferred], request, false);
-
-#ifdef DEBUG_PROTO
-        log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
-#endif
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
-
-        send_message(response);
-
-        start_read();
-     }
-    else
+    if (error)
     {
         master_t::subsystem<session_manager_t>().end_session(this_ptr);
+        return;
     }
+
+    if (bytes_transferred == MAX_DATA_LENGTH)
+    {
+        const static char message[] = "TOO BIG PACKET. ABORTED!!!";
+        send_data(message, sizeof(message));
+        master_t::subsystem<session_manager_t>().end_session(this_ptr);
+        return;
+    }
+
+    Json::Reader reader;
+    Json::Value request;
+    reader.parse(&m_data[0], &m_data[bytes_transferred], request, false);
+
+#ifdef DEBUG_PROTO
+    log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
+#endif
+    const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
+
+    send_message(response);
+
+    start_read();
 }
 
 void session_t::handle_write(const boost::system::error_code& error)
