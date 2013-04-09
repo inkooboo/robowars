@@ -79,7 +79,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
     if (bytes_transferred == MAX_DATA_LENGTH)
     {
-        const static char message[] = "TOO BIG PACKET. ABORTED!!!";
+        const static char message[] = "{ \"error\" : \"TOO BIG PACKET. ABORTED!!!\"}";
         send_data(message, sizeof(message));
         master_t::subsystem<session_manager_t>().end_session(this_ptr);
         return;
