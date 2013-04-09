@@ -13,7 +13,7 @@
 #  include "server_defs.hpp"
 
 #  include <map>
-#  include <mutex>
+#  include "spinlock.hpp"
 #  include <vector>
 
 class field_t : private noncopyable_t
@@ -27,7 +27,7 @@ public:
 
 private:
     game_object_set_t m_objects;
-    std::mutex m_objects_guard;
+    spinlock_t m_objects_guard;
 };
 
 #endif // FIELD_HPP

@@ -78,4 +78,5 @@ HEADERS += \
     session_manager.hpp \
     match_manager.hpp \
     scheduler.hpp \
-    xserver_writer.hpp
+    xserver_writer.hpp \
+    spinlock.hpp

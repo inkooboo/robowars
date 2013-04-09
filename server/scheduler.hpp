@@ -3,8 +3,9 @@
 
 #  include "server_defs.hpp"
 #  include "subsystem.hpp"
-#  include <boost/asio.hpp>
 #  include "logger.hpp"
+
+#  include <boost/asio.hpp>
 
 class scheduler_t : public subsystem_t
 {

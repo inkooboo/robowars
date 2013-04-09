@@ -7,7 +7,7 @@
 #  include "match.hpp"
 
 #  include <boost/asio.hpp>
-#  include <mutex>
+#  include "spinlock.hpp"
 
 class match_manager_t : public subsystem_t
 {
@@ -29,9 +29,9 @@ private:
     boost::asio::io_service &m_io_svc;
 
     session_set_t m_ready_sessions;
-    std::mutex m_session_guard;
+    spinlock_t m_session_guard;
     match_set_t m_matches;
-    std::mutex m_match_guard;
+    spinlock_t m_match_guard;
 };
 
 #endif // MATCH_MANAGER_HPP

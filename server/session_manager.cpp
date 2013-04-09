@@ -24,7 +24,7 @@ session_ptr session_manager_t::create_session()
 
     log<debug>() << "created new listening session " << new_session.get();
 
-    std::lock_guard<std::mutex> lock(m_guard);
+    std::lock_guard<spinlock_t> lock(m_guard);
     m_sessions.insert(new_session);
     return new_session;
 }
@@ -35,7 +35,7 @@ void session_manager_t::end_session(session_ptr &session)
 
     log<debug>() << "end session " << session.get();
 
-    std::lock_guard<std::mutex> lock(m_guard);
+    std::lock_guard<spinlock_t> lock(m_guard);
     m_sessions.erase(session);
 }
 

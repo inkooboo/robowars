@@ -6,7 +6,7 @@
 #  include "logger.hpp"
 
 #  include <boost/asio.hpp>
-#  include <mutex>
+#  include "spinlock.hpp"
 
 class session_manager_t : public subsystem_t
 {
@@ -23,7 +23,7 @@ public:
 
     boost::asio::io_service &m_io_svc;
 
-    std::mutex m_guard;
+    spinlock_t m_guard;
     session_set_t m_sessions;
 };
 

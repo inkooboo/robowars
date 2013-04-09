@@ -1,6 +1,7 @@
 #include "field.hpp"
 #include "game_object.hpp"
 #include "xserver_writer.hpp"
+#include <mutex>
 
 field_t::field_t()
 {
@@ -27,7 +28,7 @@ void field_t::on_time_chunk(float dt_ms)
     float dt_s = dt_ms / 1000.f;
 
     {
-        std::lock_guard<std::mutex> lock(m_objects_guard);
+        std::lock_guard<spinlock_t> lock(m_objects_guard);
         for (auto &object : m_objects)
         {
             // ai step
@@ -42,7 +43,7 @@ void field_t::on_time_chunk(float dt_ms)
 
 std::string field_t::xserver_field_dump()
 {
-    std::lock_guard<std::mutex> lock(m_objects_guard);
+    std::lock_guard<spinlock_t> lock(m_objects_guard);
 
     return xserver_serialize_objects(m_objects);
 }
