@@ -8,7 +8,7 @@ void packetyzer_t::parse_buffer(on_packet_cb_t cb, const char *begin, size_t len
 
 void packetyzer_t::internal_parse_buffer(on_packet_cb_t cb, const char *begin, const char *end, bool have_remaning)
 {
-    if (have_remaning)
+    if (!have_remaning)
     {
         const char *packet_begin = begin;
         for (const char *cur = begin; cur != end; ++cur)
