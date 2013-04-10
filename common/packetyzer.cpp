@@ -3,8 +3,12 @@
 
 void packetyzer_t::parse_buffer(on_packet_cb_t cb, const char *begin, size_t length)
 {
-    const char *end = begin + length;
-    if (m_remaning.empty())
+    internal_parse_buffer(cb, begin, begin + length, !m_remaning.empty());
+}
+
+void packetyzer_t::internal_parse_buffer(on_packet_cb_t cb, const char *begin, const char *end, bool have_remaning)
+{
+    if (have_remaning)
     {
         const char *packet_begin = begin;
         for (const char *cur = begin; cur != end; ++cur)
@@ -23,10 +27,9 @@ void packetyzer_t::parse_buffer(on_packet_cb_t cb, const char *begin, size_t len
     }
     else
     {
-        m_remaning.reserve(m_remaning.size() + length);
+        m_remaning.reserve(m_remaning.size() + (end - begin));
         std::copy(begin, end, &m_remaning[m_remaning.size()]);
 
-        parse_buffer(cb, &m_remaning[0], m_remaning.size());
+        internal_parse_buffer(cb, &m_remaning[0], &m_remaning[m_remaning.size()], false);
     }
 }
-

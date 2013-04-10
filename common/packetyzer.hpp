@@ -14,6 +14,8 @@ public:
     void parse_buffer(on_packet_cb_t cb, const char *begin, size_t length);
 
 private:
+    void internal_parse_buffer(on_packet_cb_t cb, const char *begin, const char *end, bool have_remaning);
+
     std::vector<char> m_remaning;
 };
 
