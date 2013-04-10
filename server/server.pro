@@ -44,7 +44,8 @@ SOURCES += main.cpp \
     match.cpp \
     scheduler.cpp \
     field.cpp \
-    xserver_writer.cpp
+    xserver_writer.cpp \
+    ../common/packetyzer.cpp
 
 HEADERS += \
     thread_pool.hpp \
@@ -78,4 +79,5 @@ HEADERS += \
     scheduler.hpp \
     xserver_writer.hpp \
     spinlock.hpp \
-    ../common/spinlock.hpp
+    ../common/spinlock.hpp \
+    ../common/packetyzer.hpp

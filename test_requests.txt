@@ -1,5 +1,5 @@
-{"id" : 0, "command" : "auth", "user" : "inkooboo", "password" : "1234"}
-{"id" : 1, "command" : "find_match"}
-{"id" : 1, "command" : "ready_for_game"}
+g{"id" : 0, "command" : "auth", "user" : "inkooboo", "password" : "1234"}
+g{"id" : 1, "command" : "find_match"}
+g{"id" : 1, "command" : "ready_for_game"}
 
 
