@@ -1,5 +1,6 @@
 client-build*
 server-build*
+tests-build*
 boost_*
 .DS_Store
 *.pro.user*
