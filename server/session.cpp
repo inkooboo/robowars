@@ -66,11 +66,11 @@ std::string stringize_json(const char *begin, const char *end)
 {
     std::string ret(begin, end);
 
-    for (auto &c : ret)
+    for (size_t i = 0; i < ret.size(); ++i)
     {
-        if (c == '\'')
+        if ('"' == ret[i])
         {
-            c = '\'';
+            ret[i] = '\'';
         }
     }
 
@@ -88,6 +88,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
     if (error)
     {
+        log<debug>() << this << " SHUTDOWN: handle_read error";
         m_valid = false;
         return;
     }
@@ -97,12 +98,17 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 #ifdef DEBUG_PROTO
         log<debug>() << this << " RECEIVED:\n" << std::string(begin, end);
 #endif
-        if (*begin != 'g')
+        auto send_bad_packet = [&]()
         {
             Json::Value error;
             error["error"] = "protocol error";
             error["bad_packet"] = stringize_json(begin, end);
             send_message(error);
+        };
+
+        if (*begin != 'g')
+        {
+            send_bad_packet();
         }
         else
         {
@@ -110,13 +116,16 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
             Json::Reader reader;
             Json::Value request;
-            reader.parse(begin, end, request, false);
-
-            const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
-
-            response["id"] = request["id"];
-
-            send_message(response);
+            if (!reader.parse(begin, end, request, false))
+            {
+                send_bad_packet();
+            }
+            else
+            {
+                Json::Value response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
+                response["id"] = request["id"];
+                send_message(response);
+            }
         }
     };
 
@@ -139,6 +148,7 @@ void session_t::handle_write(const boost::system::error_code& error)
     }
     else
     {
+        log<debug>() << this << " SHUTDOWN: handle_write error";
         m_valid = false;
     }
 }
