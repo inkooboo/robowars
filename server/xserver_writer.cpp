@@ -27,7 +27,7 @@ std::string xserver_serialize_objects(game_object_set_t &objects)
 
     Json::FastWriter writer;
 
-    return writer.write(jroot);
+    return writer.write(jroot, "x");
 }
 
 

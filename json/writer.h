@@ -24,7 +24,7 @@ namespace Json {
    public:
       virtual ~Writer();
 
-      virtual std::string write( const Value &root ) = 0;
+      virtual std::string write(const Value &root, const std::string &document_prefix = "") = 0;
    };
 
    /** \brief Outputs a Value in <a HREF="http://www.json.org">JSON</a> format without formatting (not human friendly).
@@ -42,7 +42,7 @@ namespace Json {
       void enableYAMLCompatibility();
 
    public: // overridden from Writer
-      virtual std::string write( const Value &root );
+      virtual std::string write( const Value &root, const std::string &document_prefix = "");
 
    private:
       void writeValue( const Value &value );
@@ -80,7 +80,7 @@ namespace Json {
        * \param root Value to serialize.
        * \return String containing the JSON document that represents the root value.
        */
-      virtual std::string write( const Value &root );
+      virtual std::string write( const Value &root, const std::string &document_prefix = "" );
 
    private:
       void writeValue( const Value &value );

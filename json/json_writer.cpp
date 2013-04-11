@@ -204,9 +204,9 @@ FastWriter::enableYAMLCompatibility()
 
 
 std::string 
-FastWriter::write( const Value &root )
+FastWriter::write(const Value &root , const std::string &document_prefix)
 {
-   document_ = "";
+   document_ = document_prefix;
    writeValue( root );
    document_ += "\n";
    return document_;
@@ -283,9 +283,9 @@ StyledWriter::StyledWriter()
 
 
 std::string 
-StyledWriter::write( const Value &root )
+StyledWriter::write( const Value &root, const std::string &document_prefix )
 {
-   document_ = "";
+   document_ = document_prefix;
    addChildValues_ = false;
    indentString_ = "";
    writeCommentBeforeValue( root );

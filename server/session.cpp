@@ -103,20 +103,33 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
             Json::Value error;
             error["error"] = "protocol error";
             error["bad_packet"] = stringize_json(begin, end);
-            send_message(error);
+            send_game_protocol_message(error);
         };
 
-        if (*begin != 'g')
+        const char *cur = begin;
+        bool g_found = false;
+        while (cur < end) // found protoloc id and skip \n \r
         {
+            if (*cur == 'g')
+            {
+                g_found= true;
+                ++cur;
+                break;
+            }
+            if (*cur == '\n' || *cur == '\r')
+            {
+                ++cur;
+                continue;
+            }
             send_bad_packet();
+            break;
         }
-        else
-        {
-            ++begin; // skip 'g'
 
+        if (g_found)
+        {
             Json::Reader reader;
             Json::Value request;
-            if (!reader.parse(begin, end, request, false))
+            if (!reader.parse(cur, end, request, false))
             {
                 send_bad_packet();
             }
@@ -124,7 +137,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
             {
                 Json::Value response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
                 response["id"] = request["id"];
-                send_message(response);
+                send_game_protocol_message(response);
             }
         }
     };
@@ -153,14 +166,14 @@ void session_t::handle_write(const boost::system::error_code& error)
     }
 }
 
-void session_t::send_message(const Json::Value &response)
+void session_t::send_game_protocol_message(const Json::Value &response)
 {
 #ifdef DEBUG_PROTO
     Json::StyledWriter writer;
 #else
     Json::FastWriter writer;
 #endif
-    const std::string &serialized = writer.write(response);
+    const std::string &serialized = writer.write(response, "g");
 
 #ifdef DEBUG_PROTO
         log<debug>() << this << " SEND:\n" << serialized;

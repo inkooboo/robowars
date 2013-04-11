@@ -29,7 +29,7 @@ public:
 
     void start_read();
 
-    void send_message(const Json::Value &response);
+    void send_game_protocol_message(const Json::Value &response);
 
     void send_data(const char *begin, size_t size);
 
