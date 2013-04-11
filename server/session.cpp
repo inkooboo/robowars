@@ -77,26 +77,23 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
         return;
     }
 
-    if (bytes_transferred == MAX_DATA_LENGTH)
+    auto on_packet = [&](const char *begin, const char *end)
     {
-        const static char message[] = "{ \"error\" : \"TOO BIG PACKET. ABORTED!!!\"}";
-        send_data(message, sizeof(message));
-        m_valid = false;
-        return;
-    }
-
-    Json::Reader reader;
-    Json::Value request;
-    reader.parse(&m_data[0], &m_data[bytes_transferred], request, false);
+        Json::Reader reader;
+        Json::Value request;
+        reader.parse(begin, end, request, false);
 
 #ifdef DEBUG_PROTO
-    log<debug>() << this << " RECEIVED:\n" << std::string(&m_data[0], bytes_transferred);
+        log<debug>() << this << " RECEIVED:\n" << std::string(begin, end);
 #endif
-    const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
+        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
 
-    send_message(response);
+        send_message(response);
 
-    start_read();
+        start_read();
+    };
+
+    m_packetyzer.parse_buffer(on_packet, &m_data[0], bytes_transferred);
 }
 
 void session_t::handle_write(const boost::system::error_code& error)

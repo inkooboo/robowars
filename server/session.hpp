@@ -3,7 +3,7 @@
 
 #  include "logger.hpp"
 #  include "server_defs.hpp"
-
+#  include "packetyzer.hpp"
 #  include "noncopyable.hpp"
 
 #  include <json.h>
@@ -54,6 +54,8 @@ private:
     std::atomic<bool> m_valid;
 
     match_weak_ptr m_match;
+
+    packetyzer_t m_packetyzer;
 };
 
 #endif //_SESSION_HPP_

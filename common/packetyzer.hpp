@@ -3,8 +3,9 @@
 
 #  include "noncopyable.hpp"
 #  include <vector>
+#  include <functional>
 
-typedef void(on_packet_cb_t)(const char *begin, const char *end);
+typedef std::function<void(const char *begin, const char *end)> on_packet_cb_t;
 
 class packetyzer_t : private noncopyable_t
 {
