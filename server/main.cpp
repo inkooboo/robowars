@@ -14,10 +14,14 @@
 #include <ctime>
 #include <iostream>
 #include <memory>
+#include <locale>
+#include <clocale>
 
 int main(int argc, char *argv[])
 {
     unused_params(argc, argv);
+
+    std::setlocale( LC_ALL, "English" );
 
 #ifdef DEBUG
     set_strict_threaded_log_output(true);

@@ -30,6 +30,6 @@ void packetyzer_t::internal_parse_buffer(on_packet_cb_t cb, const char *begin, c
         m_remaning.reserve(m_remaning.size() + (end - begin));
         std::copy(begin, end, &m_remaning[m_remaning.size()]);
 
-        internal_parse_buffer(cb, &m_remaning[0], &m_remaning[m_remaning.size()], false);
+        internal_parse_buffer(cb, &m_remaning[0], &m_remaning[m_remaning.size() + (end - begin)], false);
     }
 }
