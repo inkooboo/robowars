@@ -62,6 +62,21 @@ void session_t::start_read()
                              boost::asio::placeholders::bytes_transferred));
 }
 
+std::string stringize_json(const char *begin, const char *end)
+{
+    std::string ret(begin, end);
+
+    for (auto &c : ret)
+    {
+        if (c == '\'')
+        {
+            c = '\'';
+        }
+    }
+
+    return ret;
+}
+
 void session_t::handle_read(const boost::system::error_code& error, size_t bytes_transferred)
 {
     if (!m_valid)
@@ -86,7 +101,7 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
         {
             Json::Value error;
             error["error"] = "protocol error";
-            error["bad_packet"] = std::string(begin, end);
+            error["bad_packet"] = stringize_json(begin, end);
             send_message(error);
         }
         else
