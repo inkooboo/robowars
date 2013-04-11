@@ -79,21 +79,35 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
 
     auto on_packet = [&](const char *begin, const char *end)
     {
-        Json::Reader reader;
-        Json::Value request;
-        reader.parse(begin, end, request, false);
-
 #ifdef DEBUG_PROTO
         log<debug>() << this << " RECEIVED:\n" << std::string(begin, end);
 #endif
-        const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
+        if (*begin != 'g')
+        {
+            Json::Value error;
+            error["error"] = "protocol error";
+            error["bad_packet"] = std::string(begin, end);
+            send_message(error);
+        }
+        else
+        {
+            ++begin; // skip 'g'
 
-        send_message(response);
+            Json::Reader reader;
+            Json::Value request;
+            reader.parse(begin, end, request, false);
 
-        start_read();
+            const Json::Value &response = master_t::subsystem<command_processor_t>().process_request(this_ptr, request);
+
+            response["id"] = request["id"];
+
+            send_message(response);
+        }
     };
 
     m_packetyzer.parse_buffer(on_packet, &m_data[0], bytes_transferred);
+
+    start_read();
 }
 
 void session_t::handle_write(const boost::system::error_code& error)
