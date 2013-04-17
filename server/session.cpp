@@ -107,26 +107,10 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
         };
 
         const char *cur = begin;
-        bool g_found = false;
-        while (cur < end) // found protoloc id and skip \n \r
-        {
-            if (*cur == 'g')
-            {
-                g_found= true;
-                ++cur;
-                break;
-            }
-            if (*cur == '\n' || *cur == '\r')
-            {
-                ++cur;
-                continue;
-            }
-            send_bad_packet();
-            break;
-        }
 
-        if (g_found)
+        if (*cur == 'g')
         {
+            ++cur;
             Json::Reader reader;
             Json::Value request;
             if (!reader.parse(cur, end, request, false))
@@ -139,6 +123,10 @@ void session_t::handle_read(const boost::system::error_code& error, size_t bytes
                 response["id"] = request["id"];
                 send_game_protocol_message(response);
             }
+        }
+        else
+        {
+            send_bad_packet();
         }
     };
 
