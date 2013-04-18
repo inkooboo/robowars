@@ -39,8 +39,8 @@ typedef std::set<session_ptr> session_set_t;
 class command_processor_t;
 typedef std::shared_ptr<command_processor_t> command_processor_ptr;
 
-class command_iface_t;
-typedef std::shared_ptr<command_iface_t> command_iface_ptr;
+class packet_iface_t;
+typedef std::shared_ptr<packet_iface_t> command_iface_ptr;
 typedef std::unordered_map<std::string, command_iface_ptr> commands_map_t;
 
 class match_t;

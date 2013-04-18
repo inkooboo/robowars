@@ -7,10 +7,10 @@
 #  include <json.h>
 #  include <string>
 
-class command_iface_t : private noncopyable_t
+class packet_iface_t : private noncopyable_t
 {
 public:
-    virtual ~command_iface_t() {}
+    virtual ~packet_iface_t() {}
     virtual Json::Value process(session_ptr &session, const Json::Value &request) = 0;
 };
 

@@ -5,7 +5,7 @@
 #include "user_info.hpp"
 #include "match_manager.hpp"
 
-struct auth_command_t : public command_iface_t
+struct auth_command_t : public packet_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {
@@ -37,7 +37,7 @@ struct auth_command_t : public command_iface_t
     }
 };
 
-struct find_match_command_t : public command_iface_t
+struct find_match_command_t : public packet_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {
@@ -66,7 +66,7 @@ struct find_match_command_t : public command_iface_t
 };
 
 
-struct disable_find_match_command_t : public command_iface_t
+struct disable_find_match_command_t : public packet_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {
@@ -94,7 +94,7 @@ struct disable_find_match_command_t : public command_iface_t
     }
 };
 
-struct ready_for_game_command_t : public command_iface_t
+struct ready_for_game_command_t : public packet_iface_t
 {
     Json::Value process(session_ptr &session, const Json::Value &request) override
     {

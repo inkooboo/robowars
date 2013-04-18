@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +28,15 @@ SOURCES += main.cpp\
     ../json/json_value.cpp \
     ../json/json_reader.cpp \
     ../json/json_internalmap.inl \
-    ../json/json_internalarray.inl
+    ../json/json_internalarray.inl \
+    xserver_protocol.cpp \
+    network.cpp \
+    connection.cpp \
+    commands.cpp \
+    command_protocol.cpp \
+    base_protocol.cpp \
+    reactions.cpp \
+    xserver.cpp
 
 HEADERS  += mainwindow.h \
     ../common/subsystem.hpp \
@@ -47,6 +55,14 @@ HEADERS  += mainwindow.h \
     ../json/forwards.h \
     ../json/features.h \
     ../json/config.h \
-    ../json/autolink.h
+    ../json/autolink.h \
+    xserver_protocol.hpp \
+    network.hpp \
+    connection.hpp \
+    commands.hpp \
+    command_protocol.hpp \
+    base_protocol.hpp \
+    reactions.hpp \
+    xserver.hpp
 
 FORMS    += mainwindow.ui
