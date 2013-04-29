@@ -18,7 +18,6 @@ public:
   void lock()
   {
     while (state_.exchange(Locked, std::memory_order_relaxed) == Locked) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     std::atomic_thread_fence(std::memory_order_acquire);
   }
