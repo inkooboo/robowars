@@ -4,6 +4,7 @@
 #  include "noncopyable.hpp"
 #  include <vector>
 #  include <functional>
+#  include <cstddef>
 
 typedef std::function<void(const char *begin, const char *end)> on_packet_cb_t;
 
