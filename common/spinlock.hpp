@@ -2,10 +2,7 @@
 #  define SPINLOCK_HPP
 
 #include <atomic>
-#include <chrono>
 #include <thread>
-
-/// spinlock from boost examples
 
 class spinlock_t {
 private:
@@ -18,6 +15,7 @@ public:
   void lock()
   {
     while (state_.exchange(Locked, std::memory_order_relaxed) == Locked) {
+      std::this_thread::yield();
     }
     std::atomic_thread_fence(std::memory_order_acquire);
   }
