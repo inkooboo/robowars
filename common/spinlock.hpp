@@ -2,7 +2,6 @@
 #  define SPINLOCK_HPP
 
 #include <atomic>
-#include <thread>
 
 class spinlock_t {
 private:
@@ -15,7 +14,6 @@ public:
   void lock()
   {
     while (state_.exchange(Locked, std::memory_order_relaxed) == Locked) {
-      std::this_thread::yield();
     }
   }
   void unlock()
