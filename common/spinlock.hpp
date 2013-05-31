@@ -17,7 +17,6 @@ public:
     while (state_.exchange(Locked, std::memory_order_relaxed) == Locked) {
       std::this_thread::yield();
     }
-    std::atomic_thread_fence(std::memory_order_acquire);
   }
   void unlock()
   {
