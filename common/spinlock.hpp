@@ -14,7 +14,7 @@ public:
 
   void lock()
   {
-    while (state_.exchange(Locked, std::memory_order_relaxed) == Locked) {
+    while (state_.exchange(Locked, boost::memory_order_acquire) == Locked) {
       std::this_thread::yield();
     }
   }
